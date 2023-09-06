@@ -1,68 +1,114 @@
-'use client'
-import Image from 'next/image'
-import Analytics from '@/components/Analytics'
-import Chart from 'react-apexcharts'
-import { useState, useEffect } from 'react'
+"use client";
+import Image from "next/image";
+import Analytics from "@/components/Analytics";
+import ContactCard from "@/components/ContactCard";
+import DonutChart from "@/components/DonutChart";
+import SelectContact from "./SelectContact";
+import Amount from "./Amount";
+import Complete from "./Complete";
+import { useState, useEffect } from "react";
 import { BsSendFill } from "react-icons/bs";
+import {
+  Step,
+  StepIcon,
+  StepIndicator,
+  StepSeparator,
+  StepStatus,
+  Stepper,
+  useSteps,
+  Text,
+} from "@chakra-ui/react";
+import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 
 export default function Home() {
-  const donutOptions = {
-    chart: {},
-    colors: ['#1B74EF', '#e55c31'],
-    plotOptions: {
-      radialBar: {
-        dataLabels: {
-          name: {
-            fontSize: '20px',
-          },
-          value: {
-            fontSize: '16px',
-          },
-        },
-      },
-    },
-    labels: ['Income', 'Expenses'],
-  }
+  const steps = [
+    { title: "Select Contact", description: "Contact Info" },
+    { title: "Amount", description: "Date & Time" },
+    { title: "Complete", description: "Select Rooms" },
+  ];
 
-  const donutSeries = [68]
+  const { activeStep, setActiveStep } = useSteps({
+    index: 1,
+    count: steps.length + 1,
+  });
 
-  const [isClient, setIsClient] = useState(false)
-
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
 
   return (
     <div>
       <div className='p-5 md:p-8 space-y-5 flex-1 text-primary-text h-100 overflow-y-scroll'>
-        
         <div className='grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-5 md:gap-y-0'>
           <div className='col-span-2 gap-x-6'>
             <div className='min-h-[400px] bg-primary-bg hover:cursor-pointer p-5 flex-1'>
-              <p className='text-xl font-semibold'>Send Money</p>
+              <Stepper colorScheme='green' size='sm' index={activeStep} gap='0'>
+                {steps.map((step, index) => (
+                  <Step key={index}>
+                    <StepIndicator>
+                      <StepStatus complete={<StepIcon />} />
+                    </StepIndicator>
+                    <Text>
+                      <b>{step.title}</b>
+                    </Text>
+                    <StepSeparator />
+                  </Step>
+                ))}
+              </Stepper>
+              <div className='flex flex-col  justify-center min-h-[350px]'>
 
-              <div className="relative mt-6 space-y-5">
-                <input type="text" placeholder="Full Name" aria-label="Full Name" className="block focus:outline-none w-full bg-secondary-bg rounded-md py-4 pl-6 pr-20" />
-                
-                <input type="email" placeholder="Email" aria-label="Email" className="block focus:outline-none w-full bg-secondary-bg rounded-md py-4 pl-6 pr-20" />
-                
-                <input type="number" placeholder="Amount" aria-label="Amount" className="block focus:outline-none w-full bg-secondary-bg rounded-md py-4 pl-6 pr-20" />
-                
-                <textarea cols={30} placeholder="Comment" aria-label="Comment" className="block focus:outline-none w-full bg-secondary-bg rounded-md py-4 pl-6 pr-20" />
+                {activeStep == 1 && <SelectContact setActiveStep={setActiveStep} activeStep={activeStep} />}
+                {activeStep == 2 && <Amount />}
+                {activeStep == 3 && <Complete />}
 
-                <button className="flex items-center justify-center mt-4 py-3 px-5 w-[180px] bg-primary rounded shadow-md text-white">Send <BsSendFill className="ml-3" /></button>
+                {activeStep < 3 && (
+                  <div className='flex items-center justify-between gap-4'>
+                    <button
+                      className='flex items-center justify-center mt-4 py-3 px-5 w-full bg-primary rounded shadow-md text-white'
+                      onClick={() => {
+                        activeStep > 1 && setActiveStep(activeStep - 1);
+                      }}
+                    >
+                      <FiArrowLeft className='mr-3' /> Back
+                    </button>
+                    <button
+                      className='flex items-center justify-center mt-4 py-3 px-5 w-full bg-primary rounded shadow-md text-white'
+                      onClick={() => {
+                        activeStep < 3 && setActiveStep(activeStep + 1);
+                      }}
+                    >
+                      {activeStep ==2 ? 'Process Payment' : 'Next'}
+                      {activeStep ==2 ? <BsSendFill className='ml-3' /> : <FiArrowRight className='ml-3' />}
+                    </button>
+                  </div>
+                )}
+
+
+                {activeStep == 3 && (
+                  <div className=' my-2 flex w-full gap-5'>
+                    <button
+                      className='mt-4 py-2 px-5 w-full bg-primary rounded text-white'
+                      onClick={()=> console.log('Print Receipt')}
+                    >
+                      Print
+                    </button>
+                    <button
+                      className='mt-4 ml-3 py-2 px-5 w-full bg-secondary-bg rounded text-primary-text'
+                      onClick={()=> setActiveStep(1)}
+                    >
+                      Close
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
           <div className=' hover:cursor-pointer '>
-            <div className='shadow-md rounded  min-h-[400px] text-white bg-primary hover:cursor-pointer p-3 flex-1'>
-              <p className=' text-2xl'>$600,000</p>
+            <div className='shadow-md rounded space-y-5 min-h-[400px] text-white hover:cursor-pointer flex-1'>
+              <DonutChart />
+              <DonutChart />
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
-

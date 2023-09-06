@@ -8,7 +8,7 @@ const ThemeProvider = ({
   children: React.ReactNode;
 })=>{
   return (
-    <Provider themes={['light', 'dark']}>
+    <Provider themes={['light', 'dark']} defaultTheme='dark' enableSystem={false}>
       {children}
     </Provider>
   )
