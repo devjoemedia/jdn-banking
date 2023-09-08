@@ -1,7 +1,7 @@
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { RxCrossCircled } from "react-icons/rx";
 
-const Complete = () => {
+const Complete = ({data}: any) => {
   return (
     <div className='text-primary-text bg-primary-bg w-[400px] mx-auto my-5  flex flex-col items-center justify-center p-4 pb-10 '>
       <h4 className='text-center'>Transaction Details</h4>

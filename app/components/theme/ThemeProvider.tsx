@@ -1,17 +1,21 @@
-'use client'
-import { ThemeProvider as Provider } from 'next-themes'
-import React from 'react'
+"use client";
+import { ThemeProvider as Provider } from "next-themes";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const ThemeProvider = ({
-  children
-}: {
-  children: React.ReactNode;
-})=>{
+const queryClient = new QueryClient();
+
+const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Provider themes={['light', 'dark']} defaultTheme='dark' enableSystem={false}>
-      {children}
-    </Provider>
-  )
-}
+    <QueryClientProvider client={queryClient}>
+      <Provider
+        themes={["light", "dark"]}
+        defaultTheme='dark'
+        enableSystem={false}
+      >
+        {children}
+      </Provider>
+    </QueryClientProvider>
+  );
+};
 
-export default ThemeProvider
+export default ThemeProvider;
