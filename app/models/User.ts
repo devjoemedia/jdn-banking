@@ -3,9 +3,9 @@ import mongoose, { Schema } from "mongoose";
 interface IUser {
   name: string;
   email: string;
-  photo: string;
+  photo?: string;
   password: number;
-  banks: [Schema.Types.ObjectId];
+  // banks: [Schema.Types.ObjectId];
   createdAt: string;
 }
 
@@ -14,7 +14,7 @@ const userSchema = new Schema<IUser>({
   email: String,
   photo: String,
   password: String,
-  banks: [{ type: Schema.Types.ObjectId, ref: "Bank" }],
+  // banks: [{ type: Schema.Types.ObjectId, ref: "Bank" }],
   createdAt: Date,
 });
 

@@ -1,7 +1,8 @@
 "use client";
 import { ThemeProvider as Provider } from "next-themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
+import { CacheProvider } from "@chakra-ui/next-js";
+import { ChakraProvider } from "@chakra-ui/react";
 const queryClient = new QueryClient();
 
 const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
@@ -12,7 +13,9 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         defaultTheme='dark'
         enableSystem={false}
       >
-        {children}
+        <CacheProvider>
+          <ChakraProvider>{children}</ChakraProvider>
+        </CacheProvider>
       </Provider>
     </QueryClientProvider>
   );

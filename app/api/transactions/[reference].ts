@@ -12,7 +12,7 @@ export async function GET(
     const reference = params.reference;
     const transaction = await Transaction.findOne({ _id: reference });
 
-    return NextResponse.json({ status: 200, transaction });
+    return NextResponse.json({ status: 200, message: 'success', transaction });
   } catch (error) {
     return NextResponse.json({
       message: (error as Error).message,
@@ -32,7 +32,7 @@ export async function PATCH(
     const reference = params.reference;
     const transaction = await Transaction.findByIdAndUpdate(reference, response.json());
 
-    return NextResponse.json({ status: 200, transaction });
+    return NextResponse.json({ status: 200, message: 'transaction updated', transaction });
   } catch (error) {
     return NextResponse.json({
       message: (error as Error).message,

@@ -10,6 +10,8 @@ import Link from "next/link";
 import ThemeSwitcher from "@/components/theme/ThemeSwitcher";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const routes = [
   { label: "My Account", icon: <MdOutlineAnalytics /> },
@@ -21,6 +23,7 @@ const routes = [
 
 const LeftSideBar = () => {
   const pathname = usePathname();
+  const router = useRouter();
 
   return (
     <div className='shadow-lg w-[20rem] md:flex flex-col justify-between space-y-5 hidden bg-primary-bg'>
@@ -93,12 +96,16 @@ const LeftSideBar = () => {
           <BiHelpCircle className='mr-3' />
           Help
         </li>
-        <Link href='/login'>
-          <li className='flex space-x-3 items-center hover:bg-secondary-bg px-5 py-3 hover:cursor-pointer '>
-            <TbLogout className='mr-3' />
-            Logout
-          </li>
-        </Link>
+        <li
+          onClick={async () => {
+            await signOut({redirect: false, callbackUrl: "/login"})
+            router.push("/login");
+          }}
+          className='flex space-x-3 items-center hover:bg-secondary-bg px-5 py-3 hover:cursor-pointer '
+        >
+          <TbLogout className='mr-3' />
+          Logout
+        </li>
       </ul>
     </div>
   );

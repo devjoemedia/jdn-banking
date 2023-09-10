@@ -12,7 +12,7 @@ export async function GET(
     const reference = params.reference;
     const contact = await Contact.findOne({ _id: reference });
 
-    return NextResponse.json({ status: 200, contact });
+    return NextResponse.json({ status: 200, message: "success", contact });
   } catch (error) {
     return NextResponse.json({
       message: (error as Error).message,
@@ -32,7 +32,11 @@ export async function PATCH(
     const reference = params.reference;
     const contact = await Contact.findByIdAndUpdate(reference, response.json());
 
-    return NextResponse.json({ status: 200, contact });
+    return NextResponse.json({
+      status: 200,
+      message: "contact updated",
+      contact,
+    });
   } catch (error) {
     return NextResponse.json({
       message: (error as Error).message,

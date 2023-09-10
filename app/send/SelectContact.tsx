@@ -7,13 +7,13 @@ interface SelectContactProps {
   activeStep: number;
 }
 
-const SelectContact = ({ setActiveStep, activeStep }: any) => {
-  const [contact, setContact] = useState();
+const SelectContact = ({ setContact, name, email, phone, setName, setPhone, setEmail }: any) => {
 
-  const selectContact = (item: any) => {
-    setContact(item);
-    setActiveStep(activeStep + 1);
-  };
+  const contact = {
+    name: 'Joseph Nartey',
+    email: 'joenart@example.com',
+    phone: '00043458545'
+  }
 
   return (
     <div className='min-h-[350px]'>
@@ -34,12 +34,12 @@ const SelectContact = ({ setActiveStep, activeStep }: any) => {
               />
 
               <div className='h-[350px] my-3 overflow-y-scroll'>
-                <ContactCard setContact={selectContact} contact={null} />
-                <ContactCard setContact={selectContact} contact={null} />
-                <ContactCard setContact={selectContact} contact={null} />
-                <ContactCard setContact={selectContact} contact={null} />
-                <ContactCard setContact={selectContact} contact={null} />
-                <ContactCard setContact={selectContact} contact={null} />
+                <ContactCard setContact={setContact} contact={contact} />
+                <ContactCard setContact={setContact} contact={contact} />
+                <ContactCard setContact={setContact} contact={contact} />
+                <ContactCard setContact={setContact} contact={contact} />
+                <ContactCard setContact={setContact} contact={contact} />
+                <ContactCard setContact={setContact} contact={contact} />
               </div>
             </div>
           </TabPanel>
@@ -49,21 +49,27 @@ const SelectContact = ({ setActiveStep, activeStep }: any) => {
                 type='text'
                 placeholder='Full Name'
                 aria-label='Full Name'
-                className='block focus:outline-none w-full bg-secondary-bg rounded-md py-4 pl-6 pr-20'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className='block focus:outline-none w-full bg-secondary-bg rounded-md py-3 pl-6 pr-20'
               />
 
               <input
                 type='email'
                 placeholder='Email'
                 aria-label='Email'
-                className='block focus:outline-none w-full bg-secondary-bg rounded-md py-4 pl-6 pr-20 '
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className='block focus:outline-none w-full bg-secondary-bg rounded-md py-3 pl-6 pr-20'
               />
 
               <input
                 type='text'
                 placeholder='Phone'
                 aria-label='Phone'
-                className='block focus:outline-none w-full bg-secondary-bg rounded-md py-4 pl-6 pr-20 '
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className='block focus:outline-none w-full bg-secondary-bg rounded-md py-3 pl-6 pr-20'
               />
             </div>
           </TabPanel>

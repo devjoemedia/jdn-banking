@@ -1,4 +1,3 @@
-import React from 'react'
 import { BsSendFill } from "react-icons/bs";
 import Image from "next/image";
 

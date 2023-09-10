@@ -6,11 +6,11 @@ export async function GET(request: NextRequest, response: NextResponse) {
   try {
     await connectDB();
     const transactions = await Transaction.find();
-  
+
     return NextResponse.json({
       status: 201,
       message: "Success",
-      transactions
+      transactions,
     });
   } catch (error) {
     return NextResponse.json({
@@ -24,11 +24,12 @@ export async function POST(request: NextRequest, response: NextResponse) {
   try {
     const res = await request.json();
     await connectDB();
-    await Transaction.create({ ...res });
+    const transaction = await Transaction.create({ ...res });
 
     return NextResponse.json({
       status: 201,
       message: "Success",
+      transaction,
     });
   } catch (error) {
     return NextResponse.json({

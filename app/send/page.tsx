@@ -18,6 +18,7 @@ import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { useToast } from "@chakra-ui/react";
 import useCustomMutation from "../hooks/useCustonMutation";
+import { useState } from "react";
 
 interface ITransaction {
   amount: number;
@@ -30,16 +31,32 @@ interface ITransaction {
   receivingBank: string;
   paymentMethod: string;
   accountNumber: string;
-  paymentDate: string;
 }
 
 interface IRecordTransactionProps {
   ref: string;
   status: string;
-  createdAt: string
+  createdAt?: string;
+}
+interface IContact {
+  name: string;
+  email: string;
+  phone?: string;
 }
 
 export default function Home() {
+  const [selectedContact, setSelectedContact] = useState<IContact>();
+  const [name, setName] = useState<string>();
+  const [email, setEmail] = useState<string>();
+  const [phone, setPhone] = useState<string>();
+  const [amount, setAmount] = useState<number>();
+  const [comment, setComment] = useState<string>();
+
+  const setContact = (item: any) => {
+    setSelectedContact(item);
+    setActiveStep(activeStep + 1);
+  };
+
   const steps = [
     { title: "Select Contact", description: "Contact Info" },
     { title: "Amount", description: "Date & Time" },
@@ -54,21 +71,25 @@ export default function Home() {
   const { mutateAsync, isLoading, data } = useCustomMutation("allTransactions");
   const toast = useToast();
 
-  const recordTransaction = async ( {ref, status, createdAt}: IRecordTransactionProps ) => {
+  const recordTransaction = async ({
+    ref,
+    status,
+  }: IRecordTransactionProps) => {
     try {
       const payload: ITransaction = {
-        amount: 100,
-        comment: "test",
+        amount: amount as number,
+        comment: comment as string,
         sender: "000011111000001",
         receiver: "000011111000001",
-        status: ref.status,
-        transactionRef: ref.ref,
-        paymentDate: ref.paymentDate
+        status: status,
+        transactionRef: ref,
+        receivingAccount: "string",
+        receivingBank: "string",
+        paymentMethod: "string",
+        accountNumber: "string",
+      };
 
-      }
-
-      await mutateAsync({ url: "/api/banks", method: "POST", payload });
-
+      await mutateAsync({ url: "/api/transactions", method: "POST", payload });
       toast({
         title: "bank account addedd.",
         description: "bank account addedd successfully",
@@ -93,19 +114,19 @@ export default function Home() {
   };
 
   const config: any = {
-    public_key: process.env.FLUTTERWAVE_PUBLIC_KEY,
+    public_key: process.env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY,
     tx_ref: Date.now(),
-    amount: 200,
+    amount,
     currency: "NGN",
     payment_options: "card,mobilemoney,ussd",
     customer: {
-      email: "user@gmail.com",
-      phone_number: "0703456676",
-      name: "john doe",
+      email: selectedContact?.email,
+      phone_number: selectedContact?.phone,
+      name: selectedContact?.name,
     },
     customizations: {
       title: "my Payment Title",
-      description: "Payment for items in cart",
+      description: comment,
       logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
     },
   };
@@ -113,21 +134,50 @@ export default function Home() {
   const handleFlutterPayment = useFlutterwave(config);
 
   const handlePayment = () => {
+
     if (activeStep == 2) {
+      if (!amount) {
+        toast({
+          title: "error invalid amount",
+          description: "error invalid amount",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+          containerStyle: { maxWidth: "800px" },
+        });
+        return;
+      }
+
       handleFlutterPayment({
         callback: async (response) => {
           console.log(response);
           await recordTransaction({
             ref: response.flw_ref,
             status: response.status,
-            createdAt: response.created_at as unknown as string
           });
-          closePaymentModal(); // this will close the modal programmatically
+          closePaymentModal();
           setActiveStep(activeStep + 1);
         },
         onClose: () => {},
       });
     } else {
+      if (name && email) {
+        setSelectedContact({ name, email, phone });
+      }
+  
+      if (!selectedContact) {
+        toast({
+          title: "error invalid contact information",
+          description: "error invalid contact information",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+          containerStyle: { maxWidth: "800px" },
+        });
+        return;
+      }
       setActiveStep(activeStep + 1);
     }
   };
@@ -154,11 +204,27 @@ export default function Home() {
               <div className='flex flex-col  justify-center min-h-[350px]'>
                 {activeStep == 1 && (
                   <SelectContact
-                    setActiveStep={setActiveStep}
+                    setContact={setContact}
                     activeStep={activeStep}
+                    setName={setName}
+                    setEmail={setEmail}
+                    setPhone={setPhone}
+                    name={name}
+                    email={email}
+                    phone={phone}
                   />
                 )}
-                {activeStep == 2 && <Amount />}
+
+                {activeStep == 2 && (
+                  <Amount
+                    amount={amount}
+                    setAmount={setAmount}
+                    comment={comment}
+                    setComment={setComment}
+                    contact={selectedContact}
+                  />
+                )}
+
                 {activeStep == 3 && <Complete data={data} />}
 
                 {activeStep < 3 && (

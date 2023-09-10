@@ -24,11 +24,12 @@ export async function POST(request: NextRequest, response: NextResponse) {
   try {
     const res = await request.json();
     await connectDB();
-    await Contact.create({ ...res });
+    const contact = await Contact.create({ ...res });
 
     return NextResponse.json({
       status: 201,
       message: "Success",
+      contact
     });
   } catch (error) {
     return NextResponse.json({

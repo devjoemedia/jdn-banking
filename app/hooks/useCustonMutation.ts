@@ -14,11 +14,17 @@ const useCustomMutation = (queryKey: string) => {
 
   const { data, isSuccess, isLoading, mutateAsync } = useMutation({
     mutationFn: async ({ url, payload, method }: queryProps) => {
-      const res = await fetch(url, {
-        method: method || "POST",
-        body: JSON.stringify(payload),
-      });
-      return res.json();
+      try {
+        const res = await fetch(url, {
+          method: method || "POST",
+          body: JSON.stringify(payload),
+        });
+        const result = await res.json();
+        console.log({ res, result });
+        return result;
+      } catch (err) {
+        console.log({ err });
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKey] });

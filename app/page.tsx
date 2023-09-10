@@ -1,7 +1,5 @@
-"use client";
 import Analytics from "@/components/Analytics";
 import DonutChart from "@/components/DonutChart";
-import { useState, useEffect } from "react";
 import TransactionCard from "@/components/TransactionCard";
 
 export default function Home() {
@@ -35,12 +33,6 @@ export default function Home() {
                 </div>
                 <p className=' text-md text-primary underline font-bold'>Send Payments</p>
               </div>
-              {/* <div className=' shadow-md rounded  min-h-[200px] bg-primary-bg hover:cursor-pointer p-3 flex-1'>
-                <p className=' text-2xl'>$600,000</p>
-              </div>
-              <div className=' shadow-md rounded  min-h-[200px] bg-primary-bg hover:cursor-pointer p-3 flex-1'>
-                <p className=' text-2xl'>$600,000</p>
-              </div> */}
             </div>
           </div>
         </div>
@@ -66,12 +58,11 @@ export default function Home() {
           <div className=' hover:cursor-pointer space-y-4'>
             <DonutChart />
             <DonutChart />
-            {/* <div className='shadow-md rounded text-white min-h-[400px] bg-primary hover:cursor-pointer p-3 flex-1'>
-              <p className=' text-2xl'>$600,000</p>
-            </div> */}
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+Home.auth = true;

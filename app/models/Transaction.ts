@@ -10,7 +10,7 @@ interface ITransaction {
   receivingBank: string;
   paymentMethod: string;
   accountNumber: string;
-  paymentDate: string;
+  paymentDate: number;
   status: string;
 }
 
@@ -24,7 +24,7 @@ const transactionSchema = new Schema<ITransaction>({
   receivingBank: String,
   paymentMethod: String,
   accountNumber: String,
-  paymentDate: String,
+  paymentDate: {type: Number, default: Date.now()},
   status: String,
 });
 
