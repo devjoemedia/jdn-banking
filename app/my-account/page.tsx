@@ -49,10 +49,7 @@ const MyAccount = () => {
                   />
 
                   <textarea
-                    rows={20}
-                    cols={30}
                     placeholder='Bio'
-                    aria-label='Bio'
                     className='block focus:outline-none w-full bg-secondary-bg rounded-md py-4 pl-6 pr-20'
                   />
 
