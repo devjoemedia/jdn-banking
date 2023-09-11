@@ -1,18 +1,21 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Chart from "react-apexcharts";
+// import Chart from "react-apexcharts";
+import dynamic from "next/dynamic";
+
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const Analytics = () => {
   const options = {
     chart: {
       height: 350,
     },
-    foreColor: '#373d3f',
+    foreColor: "#373d3f",
     colors: ["#115a4c", "#e55c31"],
-    markers:{
-      colors: ['#333', '#999'],
-      strokeColors: '#333'
+    markers: {
+      colors: ["#333", "#999"],
+      strokeColors: "#333",
     },
     stroke: {
       width: [2, 2],

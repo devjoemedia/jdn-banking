@@ -134,7 +134,6 @@ export default function Home() {
   const handleFlutterPayment = useFlutterwave(config);
 
   const handlePayment = () => {
-
     if (activeStep == 2) {
       if (!amount) {
         toast({
@@ -165,7 +164,7 @@ export default function Home() {
       if (name && email) {
         setSelectedContact({ name, email, phone });
       }
-  
+
       if (!selectedContact) {
         toast({
           title: "error invalid contact information",
