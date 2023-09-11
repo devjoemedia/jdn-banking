@@ -1,16 +1,16 @@
 import { hash, compare } from "bcryptjs";
 import { NextResponse } from "next/server";
-import User from '../../models/User'
+import User from "../../models/User";
 import connectDB from "../../lib/connect-db";
 
 export async function POST(req: Request) {
   try {
-    const { name, email, password } = await req.json()
+    const { name, email, password } = await req.json();
     if (!email || !name || !password) {
       return null;
     }
 
-    await connectDB()
+    await connectDB();
 
     const hashed_password = await hash(password, 12);
 
@@ -21,10 +21,9 @@ export async function POST(req: Request) {
       createdAt: Date.now(),
     });
 
-    console.log('user Created')
     return NextResponse.json({
-      status:  201,
-      message: 'User Created',
+      status: 201,
+      message: "User Created",
       user: {
         name: user.name,
         email: user.email,

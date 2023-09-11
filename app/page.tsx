@@ -21,17 +21,25 @@ export default function Home() {
                 <p className=' font-bold'>Money in</p>
                 <div>
                   <p className=' text-xl'>$600,000</p>
-                  <p className=' text-secondary-text text-[16px]'>Total received</p>
+                  <p className=' text-secondary-text text-[16px]'>
+                    Total received
+                  </p>
                 </div>
-                <p className=' text-md text-primary underline font-bold'>Request money</p>
+                <p className=' text-md text-primary underline font-bold'>
+                  Request money
+                </p>
               </div>
               <div className='col-span-2 space-y-8 shadow-md rounded  min-h-[200px] bg-primary-bg hover:cursor-pointer p-3 flex-1'>
                 <p className=' font-bold'>Money out</p>
                 <div>
                   <p className=' text-xl'>$600,000</p>
-                  <p className=' text-secondary-text text-[16px]'>Total sent or spent</p>
+                  <p className=' text-secondary-text text-[16px]'>
+                    Total sent or spent
+                  </p>
                 </div>
-                <p className=' text-md text-primary underline font-bold'>Send Payments</p>
+                <p className=' text-md text-primary underline font-bold'>
+                  Send Payments
+                </p>
               </div>
             </div>
           </div>
@@ -64,5 +72,3 @@ export default function Home() {
     </div>
   );
 }
-
-Home.auth = true;

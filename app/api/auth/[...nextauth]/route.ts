@@ -12,24 +12,23 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         try {
           if (!credentials?.email || !credentials.password) {
             return null;
           }
-  
+
           await connectDB();
-  
+
           const user = await User.findOne({
             email: credentials.email,
           });
-          console.log(user);
           if (!user || !(await compare(credentials.password, user.password))) {
             return null;
           }
-  
+
           console.log(user);
-          return user;
+          return Promise.resolve(user);
         } catch (error) {
           console.log(error);
           return error;
@@ -44,8 +43,15 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/login",
   },
+  // callbacks: {
+  //   async session({ session, token, user }) {
+  //     session?.accessToken = token.accessToken
+  //     session?.user = user
 
-}
+  //     return session
+  //   }
+  // }
+};
 
 const handler = NextAuth(authOptions);
 
