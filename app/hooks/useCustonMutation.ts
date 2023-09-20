@@ -15,7 +15,7 @@ const useCustomMutation = (queryKey: string) => {
   const { data, isSuccess, isLoading, mutateAsync } = useMutation({
     mutationFn: async ({ url, payload, method }: queryProps) => {
       try {
-        const res = await fetch(url, {
+        const res = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api" + url, {
           method: method || "POST",
           body: JSON.stringify(payload),
         });

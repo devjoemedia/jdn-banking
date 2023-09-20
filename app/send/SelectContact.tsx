@@ -1,6 +1,7 @@
 import ContactCard from "@/components/ContactCard";
 import { Tab, Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
 import { useState } from "react";
+import useCustonFetch from 'app/hooks/useCustonFetch';
 
 interface SelectContactProps {
   setActiveStep: Function;
@@ -9,11 +10,7 @@ interface SelectContactProps {
 
 const SelectContact = ({ setContact, name, email, phone, setName, setPhone, setEmail }: any) => {
 
-  const contact = {
-    name: 'Joseph Nartey',
-    email: 'joenart@example.com',
-    phone: '00043458545'
-  }
+  const {data} = useCustonFetch({url: '/contacts', queryKey: 'allContacts'})
 
   return (
     <div className='min-h-[350px]'>
@@ -34,12 +31,15 @@ const SelectContact = ({ setContact, name, email, phone, setName, setPhone, setE
               />
 
               <div className='h-[350px] my-3 overflow-y-scroll'>
+                {data?.contacts?.map((item:any) => (
+                  <ContactCard key={item._id} setContact={setContact} contact={item} />
+
+                ))}
+                {/* <ContactCard setContact={setContact} contact={contact} />
                 <ContactCard setContact={setContact} contact={contact} />
                 <ContactCard setContact={setContact} contact={contact} />
                 <ContactCard setContact={setContact} contact={contact} />
-                <ContactCard setContact={setContact} contact={contact} />
-                <ContactCard setContact={setContact} contact={contact} />
-                <ContactCard setContact={setContact} contact={contact} />
+                <ContactCard setContact={setContact} contact={contact} /> */}
               </div>
             </div>
           </TabPanel>

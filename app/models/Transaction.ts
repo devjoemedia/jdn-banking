@@ -1,31 +1,33 @@
 import mongoose, { Schema } from "mongoose";
 
+type  Payer = {
+  name: string,
+  email: string
+}
 interface ITransaction {
   amount: number;
   comment: string;
   transactionRef: string;
-  receiver: string;
-  sender: string;
-  receivingAccount: string;
+  receiver: Payer;
+  sender: Payer;
   receivingBank: string;
   paymentMethod: string;
-  accountNumber: string;
   paymentDate: number;
   status: string;
+  createdAt: string
 }
 
 const transactionSchema = new Schema<ITransaction>({
   amount: Number,
   comment: String,
   transactionRef: String,
-  receiver: String,
-  sender: String,
-  receivingAccount: String,
-  receivingBank: String,
-  paymentMethod: String,
-  accountNumber: String,
+  receiver: {},
+  sender: {},
+  receivingBank: {type: String, default: 'JDN Bank'},
+  paymentMethod: {type: String, default: 'MOCK::PAYMENT'},
   paymentDate: {type: Number, default: Date.now()},
   status: String,
+  createdAt: Date
 });
 
 const Transaction =

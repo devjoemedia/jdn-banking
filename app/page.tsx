@@ -1,8 +1,13 @@
+'use client'
 import Analytics from "@/components/Analytics";
 import DonutChart from "@/components/DonutChart";
 import TransactionCard from "@/components/TransactionCard";
+import useCustonFetch from 'app/hooks/useCustonFetch';
+import Link from 'next/link'
 
 export default function Home() {
+  const {data} = useCustonFetch({url: '/transactions', queryKey: 'allTransactions'})
+
   return (
     <div>
       <div className='p-5 md:p-8 space-y-5 flex-1 text-primary-text h-100 overflow-y-scroll'>
@@ -50,16 +55,17 @@ export default function Home() {
             <div className='shadow-md rounded  min-h-[400px] bg-primary-bg hover:cursor-pointer p-3 flex-1'>
               <p className='text-xl font-semibold px-5 mb-5'>History</p>
 
-              <TransactionCard />
-              <TransactionCard />
-              <TransactionCard />
-              <TransactionCard />
-              <TransactionCard />
-              <TransactionCard />
+              {data?.transactions?.map((item: any) => (
+                <TransactionCard key={item._id} item={item} />
+              ))}
 
-              <div className='flex justify-end mt-3'>
-                <p className='text-[14px] underline px-5'>View all</p>
-              </div>
+              {data?.transactions?.length > 5 && (
+                <div className='flex justify-end mt-3'>
+                  <Link href="/transactions">
+                  <p className='text-[14px] underline px-5'>View all</p>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
 

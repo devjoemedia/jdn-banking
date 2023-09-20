@@ -1,6 +1,10 @@
+'use client'
 import CreateContactModal from '@/components/CreateContactModal'
+import useCustonFetch from 'app/hooks/useCustonFetch';
 
 const Contacts = () => {
+  const {data} = useCustonFetch({url: '/contacts', queryKey: 'allContacts'})
+
   return (
     <div>
       <div className='p-5 md:p-8 space-y-5 flex-1 text-primary-text h-100 overflow-y-scroll'>
@@ -34,38 +38,25 @@ const Contacts = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className='bg-secondary-bg border-b border-primary-bg'>
-                  <th
-                    scope='row'
-                    className='px-6 py-4 font-medium text-primary-text whitespace-nowrap '
-                  >
-                    Joseph Nartey
-                  </th>
+                {data?.contacts?.map((item:any)=> (
+                  <tr key={item._id} className='bg-secondary-bg border-b border-primary-bg'>
+                    <th
+                      scope='row'
+                      className='px-6 py-4 font-medium text-primary-text whitespace-nowrap '
+                    >
+                      {item.name}
+                    </th>
 
-                  <td className='px-6 py-4'>
-                     <p>joseph@example.com</p>
-                  </td>
+                    <td className='px-6 py-4'>
+                      <p>{item.email}</p>
+                    </td>
 
-                  <td className='px-6 py-4 text-right'>
-                     <p>Delete</p>
-                  </td>
-                </tr>
-                <tr className='bg-secondary-bg border-b border-primary-bg'>
-                  <th
-                    scope='row'
-                    className='px-6 py-4 font-medium text-primary-text whitespace-nowrap '
-                  >
-                    James Teye
-                  </th>
+                    <td className='px-6 py-4 text-right'>
+                      <p>Delete</p>
+                    </td>
+                  </tr>
 
-                  <td className='px-6 py-4'>
-                    <p>james@example.com</p>
-                  </td>
-                  
-                  <td className='px-6 py-4 text-right'>
-                     <p>Delete</p>
-                  </td>
-                </tr>
+                ))}
               </tbody>
             </table>
           </div>

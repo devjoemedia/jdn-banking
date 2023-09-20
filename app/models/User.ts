@@ -19,8 +19,8 @@ interface IUser {
 }
 
 const userSchema = new Schema<IUser>({
-  name: String,
-  email: String,
+  name: { type: String, unique: true, required: true },
+  email: { type: String, unique: true, required: true },
   photo: String,
   password: String,
   banks: [{ type: Schema.Types.ObjectId, ref: "Bank" }],

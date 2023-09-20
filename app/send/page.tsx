@@ -19,18 +19,17 @@ import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { useToast } from "@chakra-ui/react";
 import useCustomMutation from "../hooks/useCustonMutation";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 interface ITransaction {
   amount: number;
   comment: string;
   transactionRef: string;
-  receiver: string;
-  sender: string;
+  receiver: {};
+  sender: {};
   status: string;
-  receivingAccount: string;
-  receivingBank: string;
-  paymentMethod: string;
-  accountNumber: string;
+  receivingBank?: string;
+  paymentMethod?: string;
 }
 
 interface IRecordTransactionProps {
@@ -44,13 +43,15 @@ interface IContact {
   phone?: string;
 }
 
-export default function Home() {
+export default function Send() {
   const [selectedContact, setSelectedContact] = useState<IContact>();
   const [name, setName] = useState<string>();
   const [email, setEmail] = useState<string>();
   const [phone, setPhone] = useState<string>();
   const [amount, setAmount] = useState<number>();
   const [comment, setComment] = useState<string>();
+
+  const { data: session } = useSession();
 
   const setContact = (item: any) => {
     setSelectedContact(item);
@@ -79,14 +80,13 @@ export default function Home() {
       const payload: ITransaction = {
         amount: amount as number,
         comment: comment as string,
-        sender: "000011111000001",
-        receiver: "000011111000001",
+        sender: { name: session?.user?.name, email: session?.user?.email },
+        receiver: { 
+          email: selectedContact?.email,
+          name: selectedContact?.name,
+        },
         status: status,
         transactionRef: ref,
-        receivingAccount: "string",
-        receivingBank: "string",
-        paymentMethod: "string",
-        accountNumber: "string",
       };
 
       await mutateAsync({ url: "/api/transactions", method: "POST", payload });

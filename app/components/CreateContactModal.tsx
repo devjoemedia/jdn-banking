@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import useCustomMutation from "../hooks/useCustonMutation";
+import { useSession } from "next-auth/react";
 
 interface IContact {
   name: string;
@@ -24,16 +25,30 @@ const CreateContactModal = () => {
   const [email, setEmail] = useState<string>();
   const [phone, setPhone] = useState<string>();
 
+  const { data: session } = useSession();
+
   const { mutateAsync, isLoading } = useCustomMutation("allContacts");
   const toast = useToast();
 
   const createContact = async () => {
     try {
+      if(!name || !email){
+        toast({
+          title: "fill all required fields.",
+          description: "fill all required fields",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+          containerStyle: { maxWidth: "800px" },
+        });
+        return
+      }
       const payload: IContact = {
         name: name as string,
         email: email as string,
         phone: phone as string,
-        user: "00011100002222",
+        user: session?.user?.email as string,
       };
 
       await mutateAsync({ url: "/api/contacts", method: "POST", payload });

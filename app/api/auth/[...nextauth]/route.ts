@@ -5,6 +5,19 @@ import User from "../../../models/User";
 import connectDB from "../../../lib/connect-db";
 
 export const authOptions: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+  },
+  // callbacks: {
+  //   async jwt({ token, user }) {
+  //     if (user) token = user;
+  //     return token;
+  //   },
+  //   async session({ token, session }) {
+  //     if (token) session = token;
+  //     return session;
+  //   },
+  // },
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -28,7 +41,7 @@ export const authOptions: NextAuthOptions = {
           }
 
           console.log(user);
-          return Promise.resolve(user);
+          return user;
         } catch (error) {
           console.log(error);
           return error;
@@ -36,21 +49,10 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  session: {
-    strategy: "jwt",
-  },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/login",
   },
-  // callbacks: {
-  //   async session({ session, token, user }) {
-  //     session?.accessToken = token.accessToken
-  //     session?.user = user
-
-  //     return session
-  //   }
-  // }
 };
 
 const handler = NextAuth(authOptions);
