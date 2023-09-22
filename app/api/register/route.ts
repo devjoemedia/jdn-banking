@@ -1,11 +1,11 @@
 import { hash, compare } from "bcryptjs";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import User from "app/models/User";
 import connectDB from "app/lib/connect-db";
 
-export async function POST(req: Request) {
+export async function POST(request: NextRequest, response: NextResponse) {
   try {
-    const { name, email, password } = await req.json();
+    const { name, email, password } = await request.json();
     if (!email || !name || !password) {
       return null;
     }
