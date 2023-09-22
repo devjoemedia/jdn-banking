@@ -7,7 +7,11 @@ export async function POST(request: NextRequest, response: NextResponse) {
   try {
     const { name, email, password } = await request.json();
     if (!email || !name || !password) {
-      return null;
+      return NextResponse.json({
+        error: true,
+        status: 404,
+        message: "You have entered an invalid email address or password",
+      });
     }
 
     await connectDB();
@@ -22,15 +26,14 @@ export async function POST(request: NextRequest, response: NextResponse) {
     });
 
     return NextResponse.json({
+      error: false,
       status: 201,
       message: "User Created",
-      user: {
-        name: user.name,
-        email: user.email,
-      },
+      user,
     });
   } catch (error) {
     return NextResponse.json({
+      error: true,
       status: 400,
       message: (error as Error).message || "Something Wen't wrong",
     });

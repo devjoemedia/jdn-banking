@@ -12,10 +12,16 @@ export async function GET(
     const reference = params.reference;
     const transaction = await Transaction.findOne({ _id: reference });
 
-    return NextResponse.json({ status: 200, message: 'success', transaction });
+    return NextResponse.json({
+      error: false,
+      status: 200,
+      message: "success",
+      transaction,
+    });
   } catch (error) {
     return NextResponse.json({
       message: (error as Error).message,
+      error: true,
       status: 404,
     });
   }
@@ -30,12 +36,21 @@ export async function PATCH(
     await connectDB();
 
     const reference = params.reference;
-    const transaction = await Transaction.findByIdAndUpdate(reference, response.json());
+    const transaction = await Transaction.findByIdAndUpdate(
+      reference,
+      response.json()
+    );
 
-    return NextResponse.json({ status: 200, message: 'transaction updated', transaction });
+    return NextResponse.json({
+      error: false,
+      status: 200,
+      message: "transaction updated",
+      transaction,
+    });
   } catch (error) {
     return NextResponse.json({
       message: (error as Error).message,
+      error: true,
       status: 404,
     });
   }
@@ -52,10 +67,15 @@ export async function DELETE(
     const reference = params.reference;
     await Transaction.findByIdAndDelete(reference);
 
-    return NextResponse.json({ status: 200, message: "transaction deleted" });
+    return NextResponse.json({
+      error: false,
+      status: 200,
+      message: "transaction deleted",
+    });
   } catch (error) {
     return NextResponse.json({
       message: (error as Error).message,
+      error: true,
       status: 400,
     });
   }

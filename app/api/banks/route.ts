@@ -8,12 +8,14 @@ export async function GET(request: NextRequest, response: NextResponse) {
     const banks = await Bank.find();
 
     return NextResponse.json({
+      error: false,
       status: 201,
       message: "Success",
       banks,
     });
   } catch (error) {
     return NextResponse.json({
+      error: true,
       status: 400,
       message: (error as Error).message || "Something Wen't wrong",
     });
@@ -27,12 +29,14 @@ export async function POST(request: NextRequest, response: NextResponse) {
     const bank = await Bank.create({ ...res });
 
     return NextResponse.json({
+      error: false,
       status: 201,
       message: "Success",
-      bank
+      bank,
     });
   } catch (error) {
     return NextResponse.json({
+      error: true,
       status: 400,
       message: (error as Error).message || "Something Wen't wrong",
     });

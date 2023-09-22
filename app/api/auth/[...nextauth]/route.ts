@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
         console.log("authorization");
         try {
           if (!credentials?.email || !credentials.password) {
-            return null;
+            throw new Error("Invalid credentials");
           }
 
           await connectDB();
@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
             email: credentials.email,
           });
           if (!user || !(await compare(credentials.password, user.password))) {
-            return null;
+            throw new Error("Invalid credentials");
           }
 
           console.log(user);

@@ -6,14 +6,16 @@ export async function GET(request: NextRequest, response: NextResponse) {
   try {
     await connectDB();
     const contacts = await Contact.find();
-  
+
     return NextResponse.json({
+      error: false,
       status: 201,
       message: "Success",
-      contacts
+      contacts,
     });
   } catch (error) {
     return NextResponse.json({
+      error: true,
       status: 400,
       message: (error as Error).message || "Something Wen't wrong",
     });
@@ -27,12 +29,14 @@ export async function POST(request: NextRequest, response: NextResponse) {
     const contact = await Contact.create({ ...res });
 
     return NextResponse.json({
+      error: false,
       status: 201,
       message: "Success",
-      contact
+      contact,
     });
   } catch (error) {
     return NextResponse.json({
+      error: true,
       status: 400,
       message: (error as Error).message || "Something Wen't wrong",
     });

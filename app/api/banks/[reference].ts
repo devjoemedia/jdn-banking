@@ -12,10 +12,16 @@ export async function GET(
     const reference = params.reference;
     const bank = await Bank.findOne({ _id: reference });
 
-    return NextResponse.json({ status: 200, message: 'success', bank });
+    return NextResponse.json({
+      error: false,
+      status: 200,
+      message: "success",
+      bank,
+    });
   } catch (error) {
     return NextResponse.json({
       message: (error as Error).message,
+      error: true,
       status: 404,
     });
   }
@@ -32,10 +38,16 @@ export async function PATCH(
     const reference = params.reference;
     const bank = await Bank.findByIdAndUpdate(reference, response.json());
 
-    return NextResponse.json({ status: 200, message: 'bank updated', bank });
+    return NextResponse.json({
+      error: false,
+      status: 200,
+      message: "bank updated",
+      bank,
+    });
   } catch (error) {
     return NextResponse.json({
       message: (error as Error).message,
+      error: true,
       status: 404,
     });
   }
@@ -52,10 +64,15 @@ export async function DELETE(
     const reference = params.reference;
     await Bank.findByIdAndDelete(reference);
 
-    return NextResponse.json({ status: 200, message: "bank deleted" });
+    return NextResponse.json({
+      error: false,
+      status: 200,
+      message: "bank deleted",
+    });
   } catch (error) {
     return NextResponse.json({
       message: (error as Error).message,
+      error: true,
       status: 400,
     });
   }
