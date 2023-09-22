@@ -4,9 +4,9 @@ import { authOptions } from "app/api/auth/[...nextauth]/route";
 import LoginForm from "@/components/LoginForm";
 
 export default async function Login() {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions);
 
-  if(session) redirect('/')
+  if (session) redirect("/");
 
   return <LoginForm />;
 }

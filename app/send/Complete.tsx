@@ -2,7 +2,7 @@ import { BsFillCheckCircleFill } from "react-icons/bs";
 import { RxCrossCircled } from "react-icons/rx";
 
 const Complete = ({ data }: any) => {
-  const { transaction } = data;
+  const {transaction}  = data;
 
   return (
     <div className='text-primary-text bg-primary-bg w-[400px] mx-auto my-5  flex flex-col items-center justify-center p-4 pb-10 '>
@@ -18,7 +18,7 @@ const Complete = ({ data }: any) => {
 
         <p className='text-center text-secondary-text'>Transfer Complete</p>
         <p className='text-xl text-center'>
-          GH₵ {transaction.amount.toFixed(2)}
+          GH₵ {transaction?.amount?.toFixed(2)}
         </p>
 
         <div className='mb-3 space-y-3 mt-5 bg-primary-bg'>

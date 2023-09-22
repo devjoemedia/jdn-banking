@@ -15,7 +15,7 @@ interface IUser {
       balance: number;
     };
   };
-  createdAt: string;
+  createdAt: number;
 }
 
 const userSchema = new Schema<IUser>({
@@ -33,7 +33,7 @@ const userSchema = new Schema<IUser>({
       balance: { type: Number, default: 0 },
     },
   },
-  createdAt: Date,
+  createdAt: { type: Number, default: Date.now() },
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);

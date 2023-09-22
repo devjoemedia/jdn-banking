@@ -1,20 +1,20 @@
 import mongoose, { Schema } from "mongoose";
 
-type  Payer = {
-  name: string,
-  email: string
-}
+type Payer = {
+  name: string;
+  email: string;
+};
 interface ITransaction {
   amount: number;
   comment: string;
   transactionRef: string;
   receiver: Payer;
   sender: Payer;
-  receivingBank: string;
-  paymentMethod: string;
+  receivingBank?: string;
+  paymentMethod?: string;
   paymentDate: number;
   status: string;
-  createdAt: string
+  createdAt: number;
 }
 
 const transactionSchema = new Schema<ITransaction>({
@@ -23,11 +23,11 @@ const transactionSchema = new Schema<ITransaction>({
   transactionRef: String,
   receiver: {},
   sender: {},
-  receivingBank: {type: String, default: 'JDN Bank'},
-  paymentMethod: {type: String, default: 'MOCK::PAYMENT'},
-  paymentDate: {type: Number, default: Date.now()},
+  receivingBank: { type: String, default: "JDN Bank" },
+  paymentMethod: { type: String, default: "MOCK::PAYMENT" },
+  paymentDate: { type: Number, default: Date.now() },
   status: String,
-  createdAt: Date
+  createdAt: { type: Number, default: Date.now() },
 });
 
 const Transaction =

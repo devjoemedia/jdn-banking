@@ -15,11 +15,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
-import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { useToast } from "@chakra-ui/react";
 import useCustomMutation from "../hooks/useCustonMutation";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import { createTransactionReference } from "app/lib/utils";
 
 interface ITransaction {
   amount: number;
@@ -30,13 +30,9 @@ interface ITransaction {
   status: string;
   receivingBank?: string;
   paymentMethod?: string;
+  createdAt: number
 }
 
-interface IRecordTransactionProps {
-  ref: string;
-  status: string;
-  createdAt?: string;
-}
 interface IContact {
   name: string;
   email: string;
@@ -72,10 +68,7 @@ export default function Send() {
   const { mutateAsync, isLoading, data } = useCustomMutation("allTransactions");
   const toast = useToast();
 
-  const recordTransaction = async ({
-    ref,
-    status,
-  }: IRecordTransactionProps) => {
+  const recordTransaction = async () => {
     try {
       const payload: ITransaction = {
         amount: amount as number,
@@ -85,14 +78,17 @@ export default function Send() {
           email: selectedContact?.email,
           name: selectedContact?.name,
         },
-        status: status,
-        transactionRef: ref,
+        transactionRef: createTransactionReference(),
+        status: 'Completed',
+        createdAt: Date.now()
       };
 
-      await mutateAsync({ url: "/api/transactions", method: "POST", payload });
+      await mutateAsync({ url: "/transactions", method: "POST", payload });
+  console.log({ data });
+
       toast({
-        title: "bank account addedd.",
-        description: "bank account addedd successfully",
+        title: "transation complted.",
+        description: "transation complted successfully",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -102,8 +98,8 @@ export default function Send() {
     } catch (error) {
       console.log(error);
       toast({
-        title: "error adding bank",
-        description: "error adding bank",
+        title: "error making payment",
+        description: "error making payment",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -113,27 +109,7 @@ export default function Send() {
     }
   };
 
-  const config: any = {
-    public_key: process.env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY,
-    tx_ref: Date.now(),
-    amount,
-    currency: "NGN",
-    payment_options: "card,mobilemoney,ussd",
-    customer: {
-      email: selectedContact?.email,
-      phone_number: selectedContact?.phone,
-      name: selectedContact?.name,
-    },
-    customizations: {
-      title: "my Payment Title",
-      description: comment,
-      logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
-    },
-  };
-
-  const handleFlutterPayment = useFlutterwave(config);
-
-  const handlePayment = () => {
+  const handlePayment = async() => {
     if (activeStep == 2) {
       if (!amount) {
         toast({
@@ -147,19 +123,9 @@ export default function Send() {
         });
         return;
       }
+      await recordTransaction();
+      setActiveStep(activeStep + 1);
 
-      handleFlutterPayment({
-        callback: async (response) => {
-          console.log(response);
-          await recordTransaction({
-            ref: response.flw_ref,
-            status: response.status,
-          });
-          closePaymentModal();
-          setActiveStep(activeStep + 1);
-        },
-        onClose: () => {},
-      });
     } else {
       if (name && email) {
         setSelectedContact({ name, email, phone });

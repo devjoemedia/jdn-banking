@@ -2,10 +2,8 @@
 import Link from "next/link";
 import AuthLayout from "@/components/AuthLayout";
 import { useState } from "react";
-import { signIn, useSession } from "next-auth/react";
-import { useRouter, redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "app/api/auth/[...nextauth]/route";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -27,7 +25,7 @@ export default function LoginForm() {
         email,
         password,
       });
-      console.log({res});
+      console.log({ res });
       if (!res) {
         handleError();
         return;

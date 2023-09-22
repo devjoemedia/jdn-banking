@@ -1,12 +1,13 @@
+'use client'
+
 import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "app/api/auth/[...nextauth]/route";
 import ForgotPasswordForm from "@/components/ForgotPasswordForm";
+import { useSession } from "next-auth/react";
 
-export default async function ForgotPassword() {
-  const session = await getServerSession(authOptions);
+export default function ForgotPassword() {
+  const session = useSession()
+  console.log({session})
+  // if (session) redirect("/");
 
-  if (session) redirect("/");
-
-  return <ForgotPasswordForm />
+  return <ForgotPasswordForm />;
 }
