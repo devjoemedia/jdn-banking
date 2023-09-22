@@ -29,13 +29,10 @@ export async function POST(request: NextRequest, response: NextResponse) {
         email: user.email,
       },
     });
-  } catch (error: any) {
-    return new NextResponse(
-      JSON.stringify({
-        status: "error",
-        message: error.message,
-      }),
-      { status: 500 }
-    );
+  } catch (error) {
+    return NextResponse.json({
+      status: 400,
+      message: (error as Error).message || "Something Wen't wrong",
+    });
   }
 }
