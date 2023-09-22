@@ -1,7 +1,7 @@
 import { hash, compare } from "bcryptjs";
 import { NextResponse } from "next/server";
-import User from "../../models/User";
-import connectDB from "../../lib/connect-db";
+import User from "app/models/User";
+import connectDB from "app/lib/connect-db";
 
 export async function POST(req: Request) {
   try {

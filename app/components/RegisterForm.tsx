@@ -29,7 +29,7 @@ export default function RegisterForm() {
       await mutateAsync({ url: "/api/register", method: "POST", payload });
 
       console.log("user registered");
-      router.push("/");
+      router.push("/login");
     } catch (error) {
       console.log(error);
       handleError();
