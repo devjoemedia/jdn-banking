@@ -10,7 +10,7 @@ interface SelectContactProps {
 
 const SelectContact = ({ setContact, name, email, phone, setName, setPhone, setEmail }: any) => {
 
-  const {data} = useCustonFetch({url: '/contacts', queryKey: 'allContacts'})
+  const {data} = useCustonFetch({url: '/contacts', queryKey: ['allContacts']})
 
   return (
     <div className='min-h-[350px]'>

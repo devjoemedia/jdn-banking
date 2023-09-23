@@ -5,7 +5,6 @@ interface IContact {
   email: string;
   phone?: string;
   user: string;
-  // user: Schema.Types.ObjectId;
   createdAt: number;
 }
 
@@ -14,7 +13,6 @@ const contactSchema = new Schema<IContact>({
   email: String,
   phone: String,
   user: String,
-  // user: { type: Schema.Types.ObjectId, ref: "User" },
   createdAt: { type: Number, default: Date.now() },
 });
 

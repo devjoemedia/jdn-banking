@@ -3,7 +3,7 @@ import TransactionCard from '@/components/TransactionCard'
 import useCustonFetch from 'app/hooks/useCustonFetch';
 
 const Transactions = () => {
-  const {data} = useCustonFetch({url: '/transactions', queryKey: 'allTransactions'})
+  const {data} = useCustonFetch({url: '/transactions', queryKey: ['allTransactions']})
 
   return (
     <div className=" p-5 md:p-8 space-y-5">

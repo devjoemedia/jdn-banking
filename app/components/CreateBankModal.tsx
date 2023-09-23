@@ -10,30 +10,43 @@ import {
 import React, { useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import useCustomMutation from "../hooks/useCustonMutation";
-
+import { useSession } from "next-auth/react";
 interface IBankAccount {
   name: string;
-  accountNumber: number;
+  accountNumber: string;
   user: string;
 }
 
 const CreateBankModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [bankName, setBankName] = useState<string>();
-  const [accountNumber, setAccountNumber] = useState<number>(0);
+  const [accountNumber, setAccountNumber] = useState<string>();
 
-  const { mutateAsync, isLoading } = useCustomMutation("allBanks");
+  const { mutateAsync, isLoading } = useCustomMutation(["allBanks"]);
   const toast = useToast();
-
+  const { data: session } = useSession();
   const createBank = async () => {
     try {
+      if(!bankName || !accountNumber){
+        toast({
+          title: "fill all required fields.",
+          description: "fill all required fields",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+          containerStyle: { maxWidth: "800px" },
+        });
+        return
+      }
+
       const payload: IBankAccount = {
         name: bankName as string,
-        accountNumber: accountNumber as unknown as number,
-        user: "000011111000001",
+        accountNumber: accountNumber as string,
+        user: session?.user?.email as string,
       };
 
-      await mutateAsync({ url: "/api/banks", method: "POST", payload });
+      await mutateAsync({ url: "/banks", method: "POST", payload });
 
       toast({
         title: "bank account addedd.",
@@ -46,7 +59,7 @@ const CreateBankModal = () => {
       });
 
       setBankName("");
-      setAccountNumber(0);
+      setAccountNumber("");
       onClose();
     } catch (error) {
       console.log(error);
@@ -95,7 +108,7 @@ const CreateBankModal = () => {
                       aria-label='Account Number'
                       value={accountNumber}
                       onChange={(e) =>
-                        setAccountNumber(e.target.value as unknown as number)
+                        setAccountNumber(e.target.value)
                       }
                       className='block focus:outline-none w-full bg-secondary-bg rounded-md py-3 pl-6 pr-20'
                     />
@@ -105,9 +118,9 @@ const CreateBankModal = () => {
                   <div className=' my-2 flex w-[80%]'>
                     <button
                       className={`mt-4 py-2 px-5 w-[140px] rounded ${
-                        isLoading
-                          ? " bg-secondary-bg text-primary-text "
-                          : " bg-primary text-white"
+                        !isLoading
+                          ? " bg-primary text-white "
+                          : " bg-secondary-bg text-primary-text cursor-not-allowed"
                       }`}
                       onClick={createBank}
                       disabled={isLoading}

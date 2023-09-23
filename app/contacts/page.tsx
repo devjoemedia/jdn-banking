@@ -3,7 +3,7 @@ import CreateContactModal from '@/components/CreateContactModal'
 import useCustonFetch from 'app/hooks/useCustonFetch';
 
 const Contacts = () => {
-  const {data} = useCustonFetch({url: '/contacts', queryKey: 'allContacts'})
+  const {data} = useCustonFetch({url: '/contacts', queryKey: ['allContacts']})
 
   return (
     <div>

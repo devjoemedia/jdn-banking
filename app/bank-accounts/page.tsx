@@ -1,6 +1,10 @@
+'use client'
 import CreateBankModal from '@/components/CreateBankModal'
+import useCustonFetch from 'app/hooks/useCustonFetch';
 
 const BankAccounts = () => {
+  const {data} = useCustonFetch({url: '/banks', queryKey: ['allBanks']})
+
   return (
     <div>
       <div className='p-5 md:p-8 space-y-5 flex-1 text-primary-text h-100 overflow-y-scroll'>
@@ -33,38 +37,24 @@ const BankAccounts = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className='bg-secondary-bg border-b border-primary-bg'>
+              {data?.banks?.map((item:any)=>(
+                <tr key={item._id} className='bg-secondary-bg border-b border-primary-bg'>
                   <th
                     scope='row'
                     className='px-6 py-4 font-medium text-primary-text whitespace-nowrap '
                   >
-                    Lergeshire Citadel Fund
+                    {item.name}
                   </th>
 
                   <td className='px-6 py-4'>
-                     <p>$3,000,000</p>
+                     <p>GH₵ {item?.balance?.toFixed(2)}</p>
                   </td>
 
                   <td className='px-6 py-4 text-right'>
                      <p>Delete</p>
                   </td>
                 </tr>
-                <tr className='bg-secondary-bg border-b border-primary-bg'>
-                  <th
-                    scope='row'
-                    className='px-6 py-4 font-medium text-primary-text whitespace-nowrap '
-                  >
-                    Lergeshire Capernaum fund
-                  </th>
-
-                  <td className='px-6 py-4'>
-                    <p>$600,000</p>
-                  </td>
-                  
-                  <td className='px-6 py-4 text-right'>
-                     <p>Delete</p>
-                  </td>
-                </tr>
+              ))}
               </tbody>
             </table>
           </div>

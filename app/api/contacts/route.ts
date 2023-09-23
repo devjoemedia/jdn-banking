@@ -1,11 +1,25 @@
 import connectDB from "../../lib/connect-db";
 import Contact from "../../models/Contact";
 import { NextResponse, NextRequest } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "app/lib/authOptions";
 
 export async function GET(request: NextRequest, response: NextResponse) {
   try {
     await connectDB();
-    const contacts = await Contact.find();
+    const session = await getServerSession(authOptions);
+    const user = session?.user;
+
+    if (!session || !user) {
+      return NextResponse.json({
+        error: true,
+        status: 404,
+        message: "You are not authenticated",
+      });
+    }
+    const contacts = await Contact.find({
+      $or: [{ user: user?.email }, { user: user?.email }],
+    }).sort( { createdAt: -1 } );
 
     return NextResponse.json({
       error: false,

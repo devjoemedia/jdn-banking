@@ -27,7 +27,7 @@ const CreateContactModal = () => {
 
   const { data: session } = useSession();
 
-  const { mutateAsync, isLoading } = useCustomMutation("allContacts");
+  const { mutateAsync, isLoading } = useCustomMutation(["allContacts"]);
   const toast = useToast();
 
   const createContact = async () => {
@@ -51,7 +51,7 @@ const CreateContactModal = () => {
         user: session?.user?.email as string,
       };
 
-      await mutateAsync({ url: "/api/contacts", method: "POST", payload });
+      await mutateAsync({ url: "/contacts", method: "POST", payload });
 
       toast({
         title: "contact created.",
@@ -128,9 +128,9 @@ const CreateContactModal = () => {
                   <div className=' my-2 flex w-[80%]'>
                     <button
                       className={`mt-4 py-2 px-5 w-[140px] rounded ${
-                        isLoading
-                          ? " bg-secondary-bg text-primary-text "
-                          : " bg-primary text-white"
+                        !isLoading
+                          ? " bg-primary text-white "
+                          : " bg-secondary-bg text-primary-text cursor-not-allowed"
                       }`}
                       onClick={createContact}
                       disabled={isLoading}

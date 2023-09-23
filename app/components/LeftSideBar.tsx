@@ -12,6 +12,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import useGetAccountDetails from "app/hooks/useGetAccountDetails";
 
 const routes = [
   { label: "My Account", icon: <MdOutlineAnalytics /> },
@@ -25,7 +26,10 @@ const LeftSideBar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { data: session } = useSession();
-  console.log(session?.user);
+
+  const user = session?.user;
+  const { user: info} = useGetAccountDetails();
+
 
   return (
     <div className='shadow-lg w-[20rem] md:flex flex-col justify-between space-y-5 hidden bg-primary-bg'>
@@ -42,13 +46,13 @@ const LeftSideBar = () => {
               />
             </div>
             <div className=' ml-2'>
-              <p className='m-0 p-0 text-sm'>Joseph Nartey</p>
+              <p className='m-0 p-0 text-sm'>{user?.name}</p>
               <p className='text-xs m-0 p-0'>Demo Account</p>
             </div>
           </div>
           <div className=' ml-2 px-4 text-primary-text'>
             <p className='m-0 p-0 text-sm'>Account Balance</p>
-            <p className=' text-xs m-0 p-0'>$ 17,123.00</p>
+            <p className=' text-xs m-0 p-0'>GH₵ {info?.account?.demo?.balance?.toFixed(2)}</p>
           </div>
         </div>
 

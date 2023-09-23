@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-// import Chart from "react-apexcharts";
 import dynamic from "next/dynamic";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -19,14 +18,6 @@ const DonutChart = () => {
           value: {
             fontSize: "16px",
           },
-          // total: {
-          //   show: true,
-          //   label: 'Total',
-          //   formatter: function (w: any) {
-          //     // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
-          //     return 249
-          //   }
-          // }
         },
       },
     },
@@ -41,7 +32,7 @@ const DonutChart = () => {
   }, []);
 
   return (
-    <div className='text-primary-text shadow-md bg-primary-bg mb-2'>
+    <div className='text-primary-text'>
       {isClient && (
         <Chart
           options={donutOptions}

@@ -9,6 +9,7 @@ export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleError = () => {
@@ -19,17 +20,18 @@ export default function LoginForm() {
   const handleLogin = async () => {
     try {
       if (!email || !password) return handleError();
-
+      setIsLoading(true);
       const res = await signIn("credentials", {
         redirect: false,
         email,
         password,
       });
-      console.log({ res });
+
       if (!res) {
         handleError();
         return;
       }
+      setIsLoading(false);
       router.push("/");
     } catch (error) {
       console.log(error);
@@ -53,6 +55,7 @@ export default function LoginForm() {
             <input
               type='email'
               placeholder='Email *'
+              name='email'
               aria-label='Email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -62,6 +65,7 @@ export default function LoginForm() {
             <input
               type='password'
               placeholder='Password *'
+              name='password'
               aria-label='Password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -90,8 +94,13 @@ export default function LoginForm() {
               </p>
             )}
             <button
-              className='mt-10 py-4 px-5 w-full bg-primary rounded text-white'
+              className={
+                !isLoading
+                  ? "mt-10 py-4 px-5 w-full bg-primary rounded text-white"
+                  : "mt-4 py-4 px-5 w-full bg-secondary-bg rounded text-primary-text cursor-not-allowed"
+              }
               onClick={handleLogin}
+              disabled={isLoading}
             >
               Login
             </button>

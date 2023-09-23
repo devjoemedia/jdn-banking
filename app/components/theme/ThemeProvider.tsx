@@ -8,11 +8,7 @@ const queryClient = new QueryClient();
 const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Provider
-        themes={["light", "dark"]}
-        defaultTheme='dark'
-        enableSystem={false}
-      >
+      <Provider themes={["light", "dark"]} enableSystem={false}>
         <CacheProvider>
           <ChakraProvider>{children}</ChakraProvider>
         </CacheProvider>

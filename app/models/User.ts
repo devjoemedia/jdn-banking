@@ -19,7 +19,7 @@ interface IUser {
 }
 
 const userSchema = new Schema<IUser>({
-  name: { type: String, unique: true, required: true },
+  name: { type: String, required: true },
   email: { type: String, unique: true, required: true },
   photo: String,
   password: String,
@@ -36,5 +36,5 @@ const userSchema = new Schema<IUser>({
   createdAt: { type: Number, default: Date.now() },
 });
 
-const User = mongoose.models.User || mongoose.model("User", userSchema);
+const User = mongoose.models?.User || mongoose.model("User", userSchema);
 export default User;

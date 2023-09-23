@@ -13,7 +13,7 @@ export default function RegisterForm() {
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
 
-  const { mutateAsync, isLoading } = useCustomMutation("allBanks");
+  const { mutateAsync, isLoading } = useCustomMutation(["account"]);
   const router = useRouter();
 
   const handleError = () => {
@@ -26,9 +26,8 @@ export default function RegisterForm() {
       if (!name || !email || !password) return handleError();
 
       const payload = { name, email, phone, password };
-      await mutateAsync({ url: "/api/register", method: "POST", payload });
+      await mutateAsync({ url: "/register", method: "POST", payload });
 
-      console.log("user registered");
       router.push("/login");
     } catch (error) {
       console.log(error);
@@ -50,6 +49,7 @@ export default function RegisterForm() {
           <div className='space-y-4'>
             <input
               type='text'
+              name='text'
               placeholder='Full Name *'
               aria-label='Full Name'
               value={name}
@@ -59,6 +59,7 @@ export default function RegisterForm() {
 
             <input
               type='email'
+              name='email'
               placeholder='Email *'
               aria-label='Email'
               value={email}
@@ -67,6 +68,7 @@ export default function RegisterForm() {
             />
             <input
               type='number'
+              name='number'
               placeholder='Phone '
               aria-label='Phone'
               value={phone}
@@ -75,6 +77,7 @@ export default function RegisterForm() {
             />
             <input
               type='password'
+              name='password'
               placeholder='Password *'
               aria-label='Password'
               value={password}
@@ -89,8 +92,13 @@ export default function RegisterForm() {
             )}
 
             <button
-              className='mt-10 py-4 px-5 w-full bg-primary rounded text-white'
+              // className='mt-10 py-4 px-5 w-full bg-primary rounded text-white'
               onClick={handleRegisterUser}
+              className={
+                !isLoading
+                  ? "mt-10 py-4 px-5 w-full bg-primary rounded text-white"
+                  : "mt-4 py-4 px-5 w-full bg-secondary-bg rounded text-primary-text cursor-not-allowed"
+              }
             >
               Register
             </button>

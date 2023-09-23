@@ -1,18 +1,20 @@
-"use client";
 import {
   Modal,
   ModalBody,
   ModalContent,
   ModalOverlay,
-  ModalFooter,
   ModalHeader,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { RxCrossCircled } from "react-icons/rx";
 
 const TransactionCard = ({ item }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {data: session} = useSession();
+
+  const user = session?.user;
 
   return (
     <div
@@ -26,21 +28,31 @@ const TransactionCard = ({ item }: any) => {
             {item.sender.name.split(" ")?.[1].charAt(0)}
           </span>
           <div>
-            <p className='text-sm font-bold'>
-              Payment <span className='text-xs  text-secondary-text'>from</span>{" "}
-              {item.sender.name}
-            </p>
+            {user?.email == item.sender.email ? (
+              <p className='text-sm font-bold'>
+                Payment{" "}
+                <span className='text-xs  text-secondary-text'>To </span>
+                {item.receiver.name}
+              </p>
+            ) : (
+              <p className='text-sm font-bold'>
+                Payment{" "}
+                <span className='text-xs  text-secondary-text'>From </span>
+                {item.sender.name}
+              </p>
+            )}
+
             <p className='text-xs text-secondary-text'>
               {new Date(item?.paymentDate)?.toUTCString()}
             </p>
           </div>
         </div>
 
-        <p className='text-xs text-green '>Completed</p>
+        {/* <p className='text-xs text-green '>Completed</p> */}
 
         <div className='text-right'>
           <p className='text-xs text-secondary-text'>{item?.comment}</p>
-          <p className='text-sm text-primary'>GH₵ {item?.amount.toFixed(2)}</p>
+          <p className={user?.email == item.sender.email ? 'text-sm text-red-500' : 'text-sm text-primary'}>GH₵ {user?.email == item.sender.email ? '-' : '+'}{item?.amount.toFixed(2)}</p>
         </div>
       </div>
 
@@ -61,7 +73,9 @@ const TransactionCard = ({ item }: any) => {
                 <p className='text-center text-secondary-text'>
                   Transfer Complete
                 </p>
-                <p className='text-xl text-center'>GH₵ {item?.amount.toFixed(2)}</p>
+                <p className='text-xl text-center'>
+                  GH₵ {item?.amount.toFixed(2)}
+                </p>
 
                 <div className='mb-3 space-y-3 mt-5 bg-primary-bg'>
                   <div className='flex justify-between items-center py-1'>

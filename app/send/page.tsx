@@ -65,7 +65,7 @@ export default function Send() {
     count: steps.length + 1,
   });
 
-  const { mutateAsync, isLoading, data } = useCustomMutation("allTransactions");
+  const { mutateAsync, isLoading, data } = useCustomMutation(["allTransactions", "account"]);
   const toast = useToast();
 
   const recordTransaction = async () => {
