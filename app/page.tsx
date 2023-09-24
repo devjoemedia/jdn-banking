@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <div>
       <div className='p-5 md:p-8 space-y-5 flex-1 text-primary-text h-100 overflow-y-scroll'>
-        <div className='grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-5'>
+        <div className='space-y-2 md:space-y-0 md:grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-5'>
           <div className='col-span-2 gap-x-6'>
             <div className='shadow-md rounded  min-h-[400px] bg-primary-bg hover:cursor-pointer p-3 flex-1'>
               <p className='text-xl font-semibold'>Total Transactions</p>
@@ -57,7 +57,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className='grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-5 md:gap-y-0'>
+        <div className='lg:grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-5 md:gap-y-0'>
           <div className='col-span-2 gap-x-6'>
             <div className='shadow-md rounded  min-h-[550px] bg-primary-bg hover:cursor-pointer p-3 flex-1'>
               <p className='text-xl font-semibold px-5 mb-5'>History</p>
@@ -76,7 +76,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className=' hover:cursor-pointer space-y-4'>
+          <div className='hover:cursor-pointer space-y-4'>
             <div className='text-primary-text shadow-md bg-primary-bg mb-2'>
               <DonutChart />
             </div>

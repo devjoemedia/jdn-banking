@@ -150,9 +150,9 @@ export default function Send() {
   return (
     <div>
       <div className='p-5 md:p-8 space-y-5 flex-1 text-primary-text h-100 overflow-y-scroll'>
-        <div className='grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-5 md:gap-y-0'>
+        <div className='lg:grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-5 md:gap-y-0'>
           <div className='col-span-2 gap-x-6'>
-            <div className='min-h-[400px] bg-primary-bg hover:cursor-pointer p-5 flex-1'>
+            <div className='w-full min-h-[400px] bg-primary-bg hover:cursor-pointer p-5 flex-1'>
               <Stepper colorScheme='green' size='sm' index={activeStep} gap='0'>
                 {steps.map((step, index) => (
                   <Step key={index}>
@@ -193,7 +193,7 @@ export default function Send() {
                 {activeStep == 3 && <Complete data={data} />}
 
                 {activeStep < 3 && (
-                  <div className='flex items-center justify-between gap-4'>
+                  <div className='md:flex items-center justify-between gap-4'>
                     <button
                       className='flex items-center justify-center mt-4 py-3 px-5 w-full bg-primary rounded shadow-md text-white'
                       onClick={() => {
@@ -236,7 +236,7 @@ export default function Send() {
             </div>
           </div>
 
-          <div className=' hover:cursor-pointer '>
+          <div className='hidden lg:block hover:cursor-pointer '>
             <div className='shadow-md rounded space-y-5 min-h-[400px] text-white hover:cursor-pointer flex-1'>
               <DonutChart />
               <DonutChart />

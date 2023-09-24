@@ -32,7 +32,7 @@ const LeftSideBar = () => {
 
 
   return (
-    <div className='shadow-lg w-[20rem] md:flex flex-col justify-between space-y-5 hidden bg-primary-bg'>
+    <div className='shadow-lg w-[20rem] lg:flex flex-col justify-between space-y-5 hidden bg-primary-bg'>
       <div className='space-y-5'>
         <div>
           <div className='flex text-primary-text items-center py-3 px-4'>
