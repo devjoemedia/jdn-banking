@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        console.log("authorization");
+        ("authorization");
         try {
           if (!credentials?.email || !credentials.password) {
             return null;
@@ -28,7 +28,6 @@ export const authOptions: NextAuthOptions = {
             return null;
           }
 
-          console.log(user);
           return user;
         } catch (error) {
           console.log(error);

@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react";
 
 export default function ForgotPassword() {
   const session = useSession()
-  console.log({session})
   // if (session) redirect("/");
 
   return <ForgotPasswordForm />;

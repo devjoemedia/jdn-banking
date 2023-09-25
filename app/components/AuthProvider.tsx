@@ -1,6 +1,7 @@
 "use client";
 import Header from "@/components/Header";
 import LeftSideBar from "@/components/LeftSideBar";
+import MobileMenu from "@/components/MobileMenu";
 import ThemeProvider from "@/components/theme/ThemeProvider";
 import { usePathname } from "next/navigation";
 import { SessionProvider } from "next-auth/react";
@@ -17,8 +18,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             {["/register", "/login", "/forgot-password"].includes(pathname) ? (
               <>{children}</>
             ) : (
-              <main className='flex h-[100vh] w-screen overflow-hidden max-w-[1440px] mx-auto '>
+              <main className='flex-col lg:flex-row flex h-[100vh] w-screen overflow-hidden max-w-[1440px] mx-auto '>
                 <LeftSideBar />
+                <MobileMenu />
 
                 <div className='w-full relative bg-secondary-bg overflow-y-auto'>
                   <Header />

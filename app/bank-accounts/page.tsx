@@ -1,6 +1,7 @@
 'use client'
 import CreateBankModal from '@/components/CreateBankModal'
 import useCustonFetch from 'app/hooks/useCustonFetch';
+import HighestTransactions from "@/components/HighestTransactions";
 
 const BankAccounts = () => {
   const {data} = useCustonFetch({url: '/banks', queryKey: ['allBanks']})
@@ -10,7 +11,7 @@ const BankAccounts = () => {
       <div className='p-5 md:p-8 space-y-5 flex-1 text-primary-text h-100 overflow-y-scroll'>
 
         <div className='grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-5 md:gap-y-0'>
-          <div className='col-span-2 gap-x-6 shadow-md rounded bg-primary-bg p-3 w-[100%]  min-h-[400px]'>
+          <div className='col-span-3 lg:col-span-2 mt-2 lg:mt-0 gap-x-6 shadow-md rounded bg-primary-bg p-3 w-[100%]  min-h-[400px]'>
             <div className='w-full flex justify-between items-center'>
               <caption className='p-5 text-lg font-semibold text-left text-primary-text  '>
                 {/* Investments */}
@@ -59,8 +60,10 @@ const BankAccounts = () => {
             </table>
           </div>
 
-          <div className=' hover:cursor-pointer '>
-            <div className=' grid-cols-2 grid gap-5 min-h-[400px] hover:cursor-pointer flex-1'>
+          <div className='col-span-3 lg:col-span-1 mt-2 lg:mt-0 hover:cursor-pointer '>
+            <HighestTransactions />
+
+            {/* <div className=' grid-cols-2 grid gap-5 min-h-[400px] hover:cursor-pointer flex-1'>
               <div className=' shadow-md rounded  min-h-[200px] bg-primary-bg hover:cursor-pointer p-3 flex-1'>
                 <p className=' text-2xl'>$600,000</p>
               </div>
@@ -73,7 +76,7 @@ const BankAccounts = () => {
               <div className=' shadow-md rounded  min-h-[200px] bg-primary-bg hover:cursor-pointer p-3 flex-1'>
                 <p className=' text-2xl'>$600,000</p>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

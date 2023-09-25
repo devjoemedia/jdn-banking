@@ -4,6 +4,8 @@ interface IUser {
   name: string;
   email: string;
   photo?: string;
+  phone?: string;
+  bio?: string;
   password: number;
   banks: [Schema.Types.ObjectId];
   accountType: string;
@@ -22,6 +24,8 @@ const userSchema = new Schema<IUser>({
   name: { type: String, required: true },
   email: { type: String, unique: true, required: true },
   photo: String,
+  bio: String,
+  phone: String,
   password: String,
   banks: [{ type: Schema.Types.ObjectId, ref: "Bank" }],
   accountType: { type: String, default: "demo" }, // demo or real

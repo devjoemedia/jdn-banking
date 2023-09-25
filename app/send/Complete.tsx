@@ -1,12 +1,13 @@
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { RxCrossCircled } from "react-icons/rx";
+import Print from "@/components/Print";
 
 const Complete = ({ data }: any) => {
   const {transaction}  = data;
 
   return (
-    <div className='text-primary-text bg-primary-bg lg:w-[400px] mx-auto my-5  flex flex-col items-center justify-center p-4 pb-10 '>
-      <h4 className='text-center'>Transaction Details</h4>
+    <div id='t-receipt-container' className='text-primary-text bg-primary-bg lg:w-[400px] mx-auto my-5  flex flex-col items-center justify-center p-4 pb-10 '>
+      <h4 className='text-center mb-2'>Transaction Details</h4>
       <div className='w-[320px] lg:w-full'>
         <div className='h-[50px] mb-3 w-[50px] mx-auto flex items-center justify-center rounded-full bg-secondary-bg'>
           {true ? (

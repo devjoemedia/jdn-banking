@@ -1,6 +1,8 @@
-import User from "../../models/User";
-import connectDB from "../../lib/connect-db";
+import User from "../../../models/User";
+import connectDB from "../../../lib/connect-db";
 import { NextResponse, NextRequest } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "app/lib/authOptions";
 
 export async function GET(
   request: NextRequest,
@@ -12,7 +14,6 @@ export async function GET(
     const reference = params.reference;
     const user = await User.findOne({ email: reference });
 
-    console.log(user)
     return NextResponse.json({
       error: false,
       status: 200,
@@ -30,14 +31,27 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  response: NextResponse,
   { params }: { params: { reference: string } }
 ) {
   try {
     await connectDB();
+    const session = await getServerSession(authOptions);
+    const account = session?.user;
+
+    if (!session || !account) {
+      return NextResponse.json({
+        error: true,
+        status: 404,
+        message: "You are not authenticated",
+      });
+    }
 
     const reference = params.reference;
-    const user = await User.findByIdAndUpdate(reference, response.json());
+    const body = await request.json();
+    const user = await User.updateOne(
+      { email: account?.email },
+      { name: body?.name, bio: body?.bio, phone: body?.phone }
+    );
 
     return NextResponse.json({
       error: false,

@@ -13,6 +13,7 @@ import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import useGetAccountDetails from "app/hooks/useGetAccountDetails";
+import ProfileIcon from "./ProfileIcon";
 
 const routes = [
   { label: "My Account", icon: <MdOutlineAnalytics /> },
@@ -37,13 +38,14 @@ const LeftSideBar = () => {
         <div>
           <div className='flex text-primary-text items-center py-3 px-4'>
             <div className='w-[60px] h-[60px] rounded-full '>
-              <Image
+              {/* <Image
                 src='/profile.png'
                 width={60}
                 height={60}
                 className='rounded-full'
                 alt='profile'
-              />
+              /> */}
+              <ProfileIcon />
             </div>
             <div className=' ml-2'>
               <p className='m-0 p-0 text-sm'>{user?.name}</p>

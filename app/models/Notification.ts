@@ -4,10 +4,10 @@ type Identifier = {
   name: string;
   email: string;
 };
-interface ITransaction {
+interface INotification {
   amount: number;
   comment: string;
-  transactionRef: string;
+  notificationRef: string;
   receiver: Identifier;
   sender: Identifier;
   receivingBank?: string;
@@ -17,10 +17,10 @@ interface ITransaction {
   createdAt: number;
 }
 
-const transactionSchema = new Schema<ITransaction>({
+const notificationSchema = new Schema<INotification>({
   amount: Number,
   comment: String,
-  transactionRef: String,
+  notificationRef: String,
   receiver: {},
   sender: {},
   receivingBank: { type: String, default: "JDN Bank" },
@@ -30,7 +30,7 @@ const transactionSchema = new Schema<ITransaction>({
   createdAt: { type: Number, default: Date.now() },
 });
 
-const Transaction =
-  mongoose.models.Transaction ||
-  mongoose.model("Transaction", transactionSchema);
-export default Transaction;
+const Notification =
+  mongoose.models.Notification ||
+  mongoose.model("Notification", notificationSchema);
+export default Notification;

@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-// import { useSession } from 'next-auth/react';
 
 interface queryProps {
   url: string;
@@ -10,7 +9,6 @@ interface queryProps {
 const useCustomMutation = (queryKey: any) => {
   // do the magic
   const queryClient = useQueryClient();
-  // const { data: session } = useSession();
 
   const { data, isSuccess, isLoading, mutateAsync } = useMutation({
     mutationFn: async ({ url, payload, method }: queryProps) => {
@@ -23,7 +21,6 @@ const useCustomMutation = (queryKey: any) => {
           }
         );
         const result = await res.json();
-        console.log({ res, result });
         return result;
       } catch (err) {
         console.log({ err });

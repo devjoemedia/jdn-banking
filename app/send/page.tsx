@@ -20,6 +20,8 @@ import useCustomMutation from "../hooks/useCustonMutation";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { createTransactionReference } from "app/lib/utils";
+import HighestTransactions from "@/components/HighestTransactions";
+import Print from "@/components/Print";
 
 interface ITransaction {
   amount: number;
@@ -84,7 +86,6 @@ export default function Send() {
       };
 
       await mutateAsync({ url: "/transactions", method: "POST", payload });
-  console.log({ data });
 
       toast({
         title: "transation complted.",
@@ -149,7 +150,7 @@ export default function Send() {
 
   return (
     <div>
-      <div className='p-5 md:p-8 space-y-5 flex-1 text-primary-text h-100 overflow-y-scroll'>
+      <div className='p-0 md:p-8 space-y-5 flex-1 text-primary-text h-100 overflow-y-scroll'>
         <div className='lg:grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-5 md:gap-y-0'>
           <div className='col-span-2 gap-x-6'>
             <div className='w-full min-h-[400px] bg-primary-bg hover:cursor-pointer p-5 flex-1'>
@@ -218,12 +219,11 @@ export default function Send() {
 
                 {activeStep == 3 && (
                   <div className=' my-2 flex w-full gap-5'>
-                    <button
-                      className='mt-4 py-2 px-5 w-full bg-primary rounded text-white'
-                      onClick={() => console.log("Print Receipt")}
-                    >
-                      Print
-                    </button>
+                    <Print
+                      className="mt-4 py-2 px-5 w-full bg-primary rounded text-white"
+                      rootElementId='t-receipt-container'
+                      downloadFileName='receipt'
+                    />
                     <button
                       className='mt-4 ml-3 py-2 px-5 w-full bg-secondary-bg rounded text-primary-text'
                       onClick={() => setActiveStep(1)}
@@ -237,10 +237,12 @@ export default function Send() {
           </div>
 
           <div className='hidden lg:block hover:cursor-pointer '>
-            <div className='shadow-md rounded space-y-5 min-h-[400px] text-white hover:cursor-pointer flex-1'>
+            {/* <div className='shadow-md rounded space-y-5 min-h-[400px] text-white hover:cursor-pointer flex-1'>
               <DonutChart />
               <DonutChart />
-            </div>
+            </div> */}
+            <HighestTransactions />
+
           </div>
         </div>
       </div>

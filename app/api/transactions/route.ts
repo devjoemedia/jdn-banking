@@ -81,7 +81,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
     // CREATE TRANSACTION
     const transaction = await Transaction.create({ ...res });
-    console.log({ transaction, res });
 
     // UPDATE SENDER ACCOUNT BALANCE
     const senderAcc = await User.findOne({ email: transaction.sender.email });

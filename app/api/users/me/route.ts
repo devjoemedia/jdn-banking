@@ -22,7 +22,6 @@ export async function GET(
 
     const user = await User.findOne({ email: account?.email });
 
-    console.log(user)
     return NextResponse.json({
       error: false,
       status: 200,
