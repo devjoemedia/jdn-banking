@@ -8,7 +8,7 @@ const Print = ({ rootElementId, downloadFileName,className, cb }: any) => {
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF();
-      pdf.addImage(imgData, "JPEG", 0, 0);
+      pdf.addImage(imgData, "png", 0, 0, 0, 0);
       pdf.save(`${downloadFileName}.pdf`);
     });
   };
