@@ -79,7 +79,7 @@ const CreateBankModal = () => {
     <div>
       <button
         onClick={onOpen}
-        className='py-2 px-3 w-[180px] bg-primary rounded shadow-md text-white'
+        className='py-2 px-3 md:w-[180px] w-full bg-primary rounded shadow-md text-white'
       >
         Add Bank
       </button>

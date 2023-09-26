@@ -12,16 +12,15 @@ const Contacts = () => {
 
         <div className='grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-5 md:gap-y-0'>
           <div className='col-span-3 lg:col-span-2 gap-x-6 shadow-md rounded bg-primary-bg p-3 w-[100%]  min-h-[400px]'>
-            <div className='w-full flex justify-between items-center'>
-              <caption className='p-5 text-lg font-semibold text-left text-primary-text  '>
+            <div className='w-full md:flex justify-between items-center'>
+              <div className='p-5 text-lg font-semibold text-left text-primary-text  '>
                 <p className='text-xl font-semibold'>My Contacts</p>
                 <p className='mt-1 text-sm font-normal text-secondary-text'>
                   Browse a list of all your contacts.
                 </p>
-              </caption>
+              </div>
 
               <CreateContactModal />
-              {/* <button className="py-2 px-3 w-[180px] bg-primary rounded shadow-md text-white">Add Contact</button> */}
             </div>
 
             <table className='w-full mt-5 text-sm text-left text-secondary-text '>
