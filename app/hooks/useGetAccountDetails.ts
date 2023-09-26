@@ -6,7 +6,6 @@ const useGetAccountDetails = () => {
     url: `/users/me`,
     queryKey: ["account"],
   });
-
   return { user: data?.user || null, isSuccess, isLoading };
 };
 

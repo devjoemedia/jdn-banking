@@ -34,14 +34,13 @@ const MobileMenu = () => {
   const user = session?.user;
   const { user: info } = useGetAccountDetails();
 
-  useEffect(()=>{
-    setIsOpen(false)
-  },[pathname])
-
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
   return (
-    <div className='z-10 shadow-lg lg:hidden bg-primary-bg min-h-[80px]'>
-      <div className='flex justify-between px-5 items-center '>
-        <div className='flex text-primary-text items-center py-2'>
+    <div className='z-10 shadow-lg lg:hidden bg-primary-bg '>
+      <div className='flex justify-between px-5 items-center py-3'>
+        <div className='flex text-primary-text items-center mb-2'>
           <div className='w-[50px] h-[50px] rounded-full mr-2'>
             {/* <Image
               src='/profile.png'
