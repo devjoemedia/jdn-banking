@@ -27,7 +27,7 @@ const useGetAccountDetails = () => {
   const [user, setUser] = useState<IUser>();
   // do the magic
   const { data, isSuccess, isLoading } = useCustonFetch({
-    url: `/me`,
+    url: `/account`,
     queryKey: ["account"],
   });
 
