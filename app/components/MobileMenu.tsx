@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import useGetAccountDetails from "app/hooks/useGetAccountDetails";
 import { useState, useEffect } from "react";
 import ProfileIcon from "./ProfileIcon";
+import CountUp from "react-countup";
 
 const routes = [
   { label: "My Account", icon: <MdOutlineAnalytics /> },
@@ -42,19 +43,18 @@ const MobileMenu = () => {
       <div className='flex justify-between px-5 items-center py-3'>
         <div className='flex text-primary-text items-center mb-2'>
           <div className='w-[50px] h-[50px] rounded-full mr-2'>
-            {/* <Image
-              src='/profile.png'
-              width={60}
-              height={60}
-              className='rounded-full'
-              alt='profile'
-            /> */}
             <ProfileIcon />
           </div>
           <div className=' ml-2'>
             <p className='m-0 p-0 text-sm'>{user?.name}</p>
             <p className='text-xs m-0 p-0'>
-              GH₵ {info?.account?.demo?.balance?.toFixed(2)}
+              <CountUp
+                duration={3}
+                prefix='GH₵ '
+                separator=','
+                decimals={2}
+                end={parseInt(info?.account?.demo?.balance?.toFixed(2) as string)}
+              />
             </p>
           </div>
         </div>

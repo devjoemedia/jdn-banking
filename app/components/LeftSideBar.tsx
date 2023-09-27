@@ -14,6 +14,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import useGetAccountDetails from "app/hooks/useGetAccountDetails";
 import ProfileIcon from "./ProfileIcon";
+import CountUp from "react-countup";
 
 const routes = [
   { label: "My Account", icon: <MdOutlineAnalytics /> },
@@ -37,13 +38,6 @@ const LeftSideBar = () => {
         <div>
           <div className='flex text-primary-text items-center py-3 px-4'>
             <div className='w-[60px] h-[60px] rounded-full '>
-              {/* <Image
-                src='/profile.png'
-                width={60}
-                height={60}
-                className='rounded-full'
-                alt='profile'
-              /> */}
               <ProfileIcon />
             </div>
             <div className=' ml-2'>
@@ -54,7 +48,15 @@ const LeftSideBar = () => {
           <div className=' ml-2 px-4 text-primary-text'>
             <p className='m-0 p-0 text-sm'>Account Balance</p>
             <p className=' text-xs m-0 p-0'>
-              GH₵ {info?.account?.demo?.balance?.toFixed(2)}
+              <CountUp
+                duration={3}
+                prefix='GH₵ '
+                separator=','
+                decimals={2}
+                end={parseInt(
+                  info?.account?.demo?.balance?.toFixed(2) as string
+                )}
+              />
             </p>
           </div>
         </div>

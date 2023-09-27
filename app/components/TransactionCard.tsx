@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { RxCrossCircled } from "react-icons/rx";
 import Print from "./Print";
+import CountUp from "react-countup";
 
 const TransactionCard = ({ item }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -88,7 +89,13 @@ const TransactionCard = ({ item }: any) => {
                     Transfer Complete
                   </p>
                   <p className='text-xl text-center'>
-                    GH₵ {item?.amount.toFixed(2)}
+                    <CountUp
+                      duration={3}
+                      prefix='GH₵ '
+                      separator=','
+                      decimals={2}
+                      end={item?.amount.toFixed(2)}
+                    />
                   </p>
 
                   <div className='mb-3 space-y-3 mt-5 bg-primary-bg'>

@@ -1,6 +1,7 @@
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { RxCrossCircled } from "react-icons/rx";
 import Print from "@/components/Print";
+import CountUp from "react-countup";
 
 const Complete = ({ data }: any) => {
   const {transaction}  = data;
@@ -19,7 +20,13 @@ const Complete = ({ data }: any) => {
 
         <p className='text-center text-secondary-text'>Transfer Complete</p>
         <p className='text-xl text-center'>
-          GH₵ {transaction?.amount?.toFixed(2)}
+          <CountUp
+            duration={3}
+            prefix='GH₵ '
+            separator=','
+            decimals={2}
+            end={transaction?.amount?.toFixed(2)}
+          />
         </p>
 
         <div className='mb-3 space-y-3 mt-5 bg-primary-bg'>

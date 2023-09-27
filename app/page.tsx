@@ -5,6 +5,7 @@ import TransactionCard from "@/components/TransactionCard";
 import HighestTransactions from "@/components/HighestTransactions";
 import useCustonFetch from "app/hooks/useCustonFetch";
 import Link from "next/link";
+import CountUp from "react-countup";
 
 export default function Home() {
   const { data } = useCustonFetch({
@@ -20,7 +21,13 @@ export default function Home() {
             <div className='shadow-md rounded  min-h-[400px] bg-primary-bg hover:cursor-pointer p-3 flex-1'>
               <p className='text-xl font-semibold'>Total Transactions</p>
               <p className=' text-xl'>
-                GH₵ {data?.totalTransactions?.toFixed(2)}
+                <CountUp
+                  duration={3}
+                  prefix='GH₵ '
+                  separator=','
+                  decimals={2}
+                  end={data?.totalTransactions?.toFixed(2)}
+                />
               </p>
               <Analytics />
             </div>
@@ -32,7 +39,13 @@ export default function Home() {
                 <p className=' font-bold'>Money in</p>
                 <div>
                   <p className=' text-xl'>
-                    GH₵ {data?.totalReceived?.toFixed(2)}
+                    <CountUp
+                      duration={3}
+                      prefix='GH₵ '
+                      separator=','
+                      decimals={2}
+                      end={data?.totalReceived?.toFixed(2)}
+                    />
                   </p>
                   <p className=' text-secondary-text text-[16px]'>
                     Total received
@@ -45,7 +58,15 @@ export default function Home() {
               <div className='col-span-2 md:col-span-1 lg:col-span-2 space-y-8 shadow-md rounded  min-h-[200px] bg-primary-bg hover:cursor-pointer p-3 flex-1'>
                 <p className=' font-bold'>Money out</p>
                 <div>
-                  <p className=' text-xl'>GH₵ {data?.totalSent?.toFixed(2)}</p>
+                  <p className=' text-xl'>
+                    <CountUp
+                      duration={3}
+                      prefix='GH₵ '
+                      separator=','
+                      decimals={2}
+                      end={data?.totalSent?.toFixed(2)}
+                    />
+                  </p>
                   <p className=' text-secondary-text text-[16px]'>
                     Total sent or spent
                   </p>
