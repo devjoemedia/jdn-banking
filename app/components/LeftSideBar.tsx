@@ -29,8 +29,7 @@ const LeftSideBar = () => {
   const { data: session } = useSession();
 
   const user = session?.user;
-  const { user: info} = useGetAccountDetails();
-
+  const { user: info } = useGetAccountDetails();
 
   return (
     <div className='shadow-lg w-[20rem] lg:flex flex-col justify-between space-y-5 hidden bg-primary-bg'>
@@ -54,7 +53,9 @@ const LeftSideBar = () => {
           </div>
           <div className=' ml-2 px-4 text-primary-text'>
             <p className='m-0 p-0 text-sm'>Account Balance</p>
-            <p className=' text-xs m-0 p-0'>GH₵ {info?.account?.demo?.balance?.toFixed(2)}</p>
+            <p className=' text-xs m-0 p-0'>
+              GH₵ {info?.account?.demo?.balance?.toFixed(2)}
+            </p>
           </div>
         </div>
 
