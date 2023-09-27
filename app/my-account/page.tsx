@@ -31,9 +31,9 @@ const MyAccount = () => {
 
   useEffect(() => {
     if (user?.email) {
-      setName(user?.name);
-      setPhone(user?.phone);
-      setBio(user?.bio);
+      setName(user?.name as string);
+      setPhone(user?.phone as string);
+      setBio(user?.bio as string);
     }
   }, [user]);
 
