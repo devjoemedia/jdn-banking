@@ -28,7 +28,7 @@ export default function Send() {
    
   const ref = searchParams.get('ref')
 
-    const {data:transaction, isLoading} = useCustonFetch({url: `/transactions/${ref}`, queryKey: ['transaction_'+ref]})
+  const {data:transaction, isLoading} = useCustonFetch({url: `/transactions/${ref}`, queryKey: ['transaction_'+ref]})
 
   return (
     <div>
