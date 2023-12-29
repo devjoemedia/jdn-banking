@@ -143,7 +143,6 @@ export default function Send() {
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
     if (query.get("success")) {
-      console.log({ data });
       setActiveStep(activeStep + 1);
       console.log("Order placed! You will receive an email confirmation.");
     }

@@ -1,17 +1,18 @@
-import Transaction from "../../models/Transaction";
-import connectDB from "../../lib/connect-db";
+import Transaction from "../../../models/Transaction";
+import connectDB from "../../../lib/connect-db";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { reference: string } }
+  params: { params: { reference: string } }
 ) {
   try {
     await connectDB();
 
-    const reference = params.reference;
-    const transaction = await Transaction.findOne({ _id: reference });
-
+    const reference = params.params.reference;
+    const transaction = await Transaction.findOne({
+      transactionRef: reference,
+    }).select({ __v: 0, _id: 0 });
     return NextResponse.json({
       error: false,
       status: 200,

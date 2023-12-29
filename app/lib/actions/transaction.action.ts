@@ -25,10 +25,11 @@ export const recordTransaction = async (transaction: ITransaction) => {
       senderEmail: transaction.sender.email,
       senderName: transaction.sender.name,
       amount: transaction.amount,
-      comment: transaction.comment
+      comment: transaction.comment,
+      transactionRef: transaction.transactionRef,
     },
     mode: "payment",
-    success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/send?success=true`,
+    success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/send/complete?success=true&ref=${transaction.transactionRef}`,
     cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/send?canceled=true`,
   });
 

@@ -23,8 +23,8 @@ export async function POST(request: NextRequest, response: NextResponse) {
         await connectDB();
 
         // CHECK ACCOUNT BALANCE
-        const userAcc = await User.findOne({ email: metadata?.sender });
-        if (userAcc.account.demo.balance < amount_total) {
+        const userAcc = await User.findOne({ email: metadata?.senderEmail });
+        if (userAcc.account.demo.balance < metadata.amount) {
           return NextResponse.json({
             error: true,
             status: 404,
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
         const transaction = await Transaction.create({
           amount: Number(metadata.amount),
           comment: metadata.comment,
-          transactionRef: id,
+          transactionRef: metadata.transactionRef,
           receiver: {
             name: metadata.receiverName,
             email: metadata.receiverEmail,
