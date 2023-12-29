@@ -32,6 +32,5 @@ export const recordTransaction = async (transaction: ITransaction) => {
     cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/send?canceled=true`,
   });
 
-  console.log({ session });
   redirect(session.url!);
 };

@@ -52,6 +52,7 @@ export default function Send() {
   const [phone, setPhone] = useState<string>();
   const [amount, setAmount] = useState<number>();
   const [comment, setComment] = useState<string>();
+  const [data, setData] = useState<any>(null);
 
   const { data: session } = useSession();
 
@@ -71,10 +72,10 @@ export default function Send() {
     count: steps.length + 1,
   });
 
-  const { mutateAsync, isLoading, data } = useCustomMutation([
-    "allTransactions",
-    "account",
-  ]);
+  // const { mutateAsync, isLoading, data } = useCustomMutation([
+  //   "allTransactions",
+  //   "account",
+  // ]);
   const toast = useToast();
 
   const handlePayment = async () => {
@@ -104,17 +105,19 @@ export default function Send() {
         status: "Completed",
         createdAt: Date.now(),
       };
-      if(!amount){ toast({
-        title: "error invalid amount",
-        description: "error invalid amount",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-        position: "top",
-        containerStyle: { maxWidth: "800px" },
-      })};
+      if (!amount) {
+        toast({
+          title: "error invalid amount",
+          description: "error invalid amount",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+          containerStyle: { maxWidth: "800px" },
+        });
+      }
       await recordTransaction(payload);
-      // setActiveStep(activeStep + 1);
+      setData(payload);
     } else {
       if (name && email) {
         setSelectedContact({ name, email, phone });
@@ -140,6 +143,7 @@ export default function Send() {
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
     if (query.get("success")) {
+      console.log({ data });
       setActiveStep(activeStep + 1);
       console.log("Order placed! You will receive an email confirmation.");
     }

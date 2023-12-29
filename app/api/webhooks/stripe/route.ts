@@ -34,7 +34,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
         // CREATE TRANSACTION
         const transaction = await Transaction.create({
-          amount: metadata.amount,
+          amount: Number(metadata.amount),
           comment: metadata.comment,
           transactionRef: id,
           receiver: {
