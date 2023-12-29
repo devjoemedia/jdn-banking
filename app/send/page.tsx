@@ -17,22 +17,24 @@ import {
 import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import { useToast } from "@chakra-ui/react";
 import useCustomMutation from "../hooks/useCustonMutation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { createTransactionReference } from "app/lib/utils";
 import HighestTransactions from "@/components/HighestTransactions";
 import Print from "@/components/Print";
+import { loadStripe } from "@stripe/stripe-js";
+import { recordTransaction } from "app/lib/actions/transaction.action";
 
-interface ITransaction {
+export interface ITransaction {
   amount: number;
   comment: string;
   transactionRef: string;
-  receiver: {};
-  sender: {};
+  receiver: { name: string; email: string };
+  sender: { name: string; email: string };
   status: string;
   receivingBank?: string;
   paymentMethod?: string;
-  createdAt: number
+  createdAt: number;
 }
 
 interface IContact {
@@ -40,6 +42,8 @@ interface IContact {
   email: string;
   phone?: string;
 }
+
+loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string);
 
 export default function Send() {
   const [selectedContact, setSelectedContact] = useState<IContact>();
@@ -67,50 +71,13 @@ export default function Send() {
     count: steps.length + 1,
   });
 
-  const { mutateAsync, isLoading, data } = useCustomMutation(["allTransactions", "account"]);
+  const { mutateAsync, isLoading, data } = useCustomMutation([
+    "allTransactions",
+    "account",
+  ]);
   const toast = useToast();
 
-  const recordTransaction = async () => {
-    try {
-      const payload: ITransaction = {
-        amount: amount as number,
-        comment: comment as string,
-        sender: { name: session?.user?.name, email: session?.user?.email },
-        receiver: { 
-          email: selectedContact?.email,
-          name: selectedContact?.name,
-        },
-        transactionRef: createTransactionReference(),
-        status: 'Completed',
-        createdAt: Date.now()
-      };
-
-      await mutateAsync({ url: "/transactions", method: "POST", payload });
-
-      toast({
-        title: "transation complted.",
-        description: "transation complted successfully",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-        position: "top",
-        containerStyle: { maxWidth: "800px" },
-      });
-    } catch (error) {
-      console.log(error);
-      toast({
-        title: "error making payment",
-        description: "error making payment",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-        position: "top",
-        containerStyle: { maxWidth: "800px" },
-      });
-    }
-  };
-
-  const handlePayment = async() => {
+  const handlePayment = async () => {
     if (activeStep == 2) {
       if (!amount) {
         toast({
@@ -124,9 +91,30 @@ export default function Send() {
         });
         return;
       }
-      await recordTransaction();
-      setActiveStep(activeStep + 1);
 
+      const payload: ITransaction = {
+        amount: amount as number,
+        comment: comment as string,
+        sender: { name: session?.user?.name!, email: session?.user?.email! },
+        receiver: {
+          email: selectedContact?.email!,
+          name: selectedContact?.name!,
+        },
+        transactionRef: createTransactionReference(),
+        status: "Completed",
+        createdAt: Date.now(),
+      };
+      if(!amount){ toast({
+        title: "error invalid amount",
+        description: "error invalid amount",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+        containerStyle: { maxWidth: "800px" },
+      })};
+      await recordTransaction(payload);
+      // setActiveStep(activeStep + 1);
     } else {
       if (name && email) {
         setSelectedContact({ name, email, phone });
@@ -147,6 +135,21 @@ export default function Send() {
       setActiveStep(activeStep + 1);
     }
   };
+
+  useEffect(() => {
+    // Check to see if this is a redirect back from Checkout
+    const query = new URLSearchParams(window.location.search);
+    if (query.get("success")) {
+      setActiveStep(activeStep + 1);
+      console.log("Order placed! You will receive an email confirmation.");
+    }
+
+    if (query.get("canceled")) {
+      console.log(
+        "Order canceled -- continue to shop around and checkout when you’re ready."
+      );
+    }
+  }, []);
 
   return (
     <div>
@@ -220,7 +223,7 @@ export default function Send() {
                 {activeStep == 3 && (
                   <div className=' my-2 flex w-full gap-5'>
                     <Print
-                      className="mt-4 py-2 px-5 w-full bg-primary rounded text-white"
+                      className='mt-4 py-2 px-5 w-full bg-primary rounded text-white'
                       rootElementId='t-receipt-container'
                       downloadFileName='receipt'
                     />
@@ -242,7 +245,6 @@ export default function Send() {
               <DonutChart />
             </div> */}
             <HighestTransactions />
-
           </div>
         </div>
       </div>
