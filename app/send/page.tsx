@@ -93,6 +93,7 @@ export default function Send() {
         return;
       }
 
+      const transactionRef = createTransactionReference()
       const payload: ITransaction = {
         amount: amount as number,
         comment: comment as string,
@@ -101,7 +102,7 @@ export default function Send() {
           email: selectedContact?.email!,
           name: selectedContact?.name!,
         },
-        transactionRef: createTransactionReference(),
+        transactionRef,
         status: "Completed",
         createdAt: Date.now(),
       };

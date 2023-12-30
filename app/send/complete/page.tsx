@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 import { createTransactionReference } from "app/lib/utils";
 import HighestTransactions from "@/components/HighestTransactions";
 import Print from "@/components/Print";
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from "next/navigation";
 
 export interface ITransaction {
   amount: number;
@@ -24,11 +24,16 @@ export interface ITransaction {
 }
 
 export default function Send() {
-  const searchParams = useSearchParams()
-   
-  const ref = searchParams.get('ref')
+  const searchParams = useSearchParams();
 
-  const {data:transaction, isLoading} = useCustonFetch({url: `/transactions/${ref}`, queryKey: ['transaction_'+ref]})
+  const ref = searchParams.get("ref");
+
+  const { data, isLoading } = useCustonFetch({
+    url: `/transactions/${ref}`,
+    queryKey: ["transaction_" + ref],
+  });
+
+  const transaction = data?.transaction;
 
   return (
     <div>
@@ -36,7 +41,13 @@ export default function Send() {
         <div className='lg:grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-5 md:gap-y-0'>
           <div className='col-span-2 gap-x-6'>
             <div className='w-full min-h-[400px] bg-primary-bg hover:cursor-pointer p-5 flex-1'>
-              {isLoading ? <p className='text-center text-secondary-text'>Loading transaction details</p>: <Complete data={transaction}/>}
+              {!isLoading && transaction ? (
+                <Complete data={transaction} />
+              ) : (
+                <p className='text-center text-secondary-text'>
+                  Loading transaction details
+                </p>
+              )}
             </div>
           </div>
 

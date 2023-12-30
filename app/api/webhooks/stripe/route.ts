@@ -14,11 +14,10 @@ export async function POST(request: NextRequest, response: NextResponse) {
     const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
     let event;
-    event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
+    event = await stripe.webhooks.constructEvent(body, sig, endpointSecret);
 
     // Handle the event
-    switch (event.type) {
-      case "checkout.session.completed":
+    if (event.type == "checkout.session.completed") {
         const { id, amount_total, metadata } = event.data.object;
         await connectDB();
 
@@ -87,9 +86,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
           message: "Success",
           transaction,
         });
-        break;
-      default:
-        console.log(`Unhandled event type ${event.type}`);
     }
   } catch (error) {
     return NextResponse.json({
