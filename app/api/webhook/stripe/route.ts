@@ -39,16 +39,16 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
     // CREATE TRANSACTION
     const transaction = await Transaction.create({
-      amount: Number(metadata?.amount as string),
-      comment: metadata?.comment as string,
-      transactionRef: metadata?.transactionRef as string,
+      amount: Number(metadata?.amount),
+      comment: metadata?.comment,
+      transactionRef: metadata?.transactionRef,
       receiver: {
-        name: metadata?.receiverName as string,
-        email: metadata?.receiverEmail as string,
+        name: metadata?.receiverName,
+        email: metadata?.receiverEmail,
       },
       sender: {
-        name: metadata?.senderName as string,
-        email: metadata?.senderEmail as string,
+        name: metadata?.senderName,
+        email: metadata?.senderEmail,
       },
       receivingBank: "JDN Bank",
       paymentMethod: "MOCK::PAYMENT",
