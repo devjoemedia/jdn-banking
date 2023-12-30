@@ -6,7 +6,6 @@ import Transaction from "app/models/Transaction";
 import { getServerSession } from "next-auth";
 import stripe from "stripe";
 import { createTransaction } from "app/lib/actions/transaction.action";
-import axios from "axios";
 
 export async function POST(request: NextRequest, response: NextResponse) {
   const body = await request.text();
@@ -27,7 +26,19 @@ export async function POST(request: NextRequest, response: NextResponse) {
   // Handle the event
   if (event.type == "checkout.session.completed") {
     const { id, amount_total, metadata } = event.data.object;
-    const transaction = {
+
+    // CHECK ACCOUNT BALANCE
+    const userAcc = await User.findOne({ email: metadata?.senderEmail });
+    if (userAcc.account.demo.balance < metadata?.amount!) {
+      return NextResponse.json({
+        error: true,
+        status: 404,
+        message: "Insufficient funds",
+      });
+    }
+
+    // CREATE TRANSACTION
+    const transaction = await Transaction.create({
       amount: Number(metadata?.amount as string),
       comment: metadata?.comment as string,
       transactionRef: metadata?.transactionRef as string,
@@ -43,15 +54,41 @@ export async function POST(request: NextRequest, response: NextResponse) {
       paymentMethod: "MOCK::PAYMENT",
       paymentDate: Date.now(),
       status: "Completed",
-    };
+    });
 
-  const {data} = await axios.post("/api/transactions", transaction);
+    // UPDATE SENDER ACCOUNT BALANCE
+    const senderAcc = await User.findOne({ email: transaction.sender.email });
+    await User.updateOne(
+      { email: transaction.sender.email },
+      {
+        $set: {
+          "account.demo.balance":
+            senderAcc.account.demo.balance - transaction.amount,
+        },
+      }
+    );
+
+    // UPDATE RECEIVER ACCOUNT BALANCE
+    const receiverAcc = await User.findOne({
+      email: transaction.receiver.email,
+    });
+    if (receiverAcc) {
+      await User.updateOne(
+        { email: transaction.receiver.email },
+        {
+          $set: {
+            "account.demo.balance":
+              receiverAcc.account.demo.balance + transaction.amount,
+          },
+        }
+      );
+    }
 
     return NextResponse.json({
       error: false,
       status: 201,
       message: "Success",
-      transaction: data?.transaction,
+      transaction,
     });
   }
 }
