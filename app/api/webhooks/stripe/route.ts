@@ -4,7 +4,7 @@ import User from "app/models/User";
 import connectDB from "app/lib/connect-db";
 import Transaction from "app/models/Transaction";
 import { getServerSession } from "next-auth";
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY as string);
+import stripe from "stripe";
 
 export async function POST(request: NextRequest, response: NextResponse) {
   const body = await request.text();
