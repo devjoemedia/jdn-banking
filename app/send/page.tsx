@@ -52,7 +52,6 @@ export default function Send() {
   const [phone, setPhone] = useState<string>();
   const [amount, setAmount] = useState<number>();
   const [comment, setComment] = useState<string>();
-  const [data, setData] = useState<any>(null);
 
   const { data: session } = useSession();
 
@@ -64,7 +63,7 @@ export default function Send() {
   const steps = [
     { title: "Select Contact", description: "Contact Info" },
     { title: "Amount", description: "Date & Time" },
-    { title: "Complete", description: "Select Rooms" },
+    // { title: "Complete", description: "Select Rooms" },
   ];
 
   const { activeStep, setActiveStep } = useSteps({
@@ -72,10 +71,6 @@ export default function Send() {
     count: steps.length + 1,
   });
 
-  // const { mutateAsync, isLoading, data } = useCustomMutation([
-  //   "allTransactions",
-  //   "account",
-  // ]);
   const toast = useToast();
 
   const handlePayment = async () => {
@@ -118,7 +113,6 @@ export default function Send() {
         });
       }
       await recordTransaction(payload);
-      setData(payload);
     } else {
       if (name && email) {
         setSelectedContact({ name, email, phone });
@@ -140,20 +134,6 @@ export default function Send() {
     }
   };
 
-  useEffect(() => {
-    // Check to see if this is a redirect back from Checkout
-    const query = new URLSearchParams(window.location.search);
-    if (query.get("success")) {
-      setActiveStep(activeStep + 1);
-      console.log("Order placed! You will receive an email confirmation.");
-    }
-
-    if (query.get("canceled")) {
-      console.log(
-        "Order canceled -- continue to shop around and checkout when you’re ready."
-      );
-    }
-  }, []);
 
   return (
     <div>
@@ -197,8 +177,6 @@ export default function Send() {
                     contact={selectedContact}
                   />
                 )}
-
-                {activeStep == 3 && <Complete data={data} />}
 
                 {activeStep < 3 && (
                   <div className='md:flex items-center justify-between gap-4'>
