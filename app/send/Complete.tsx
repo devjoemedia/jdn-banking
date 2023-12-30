@@ -6,7 +6,7 @@ import useCustonFetch from "app/hooks/useCustonFetch";
 import Link from "next/link";
 
 const Complete = ({ data }: any) => {
-  const { transaction } = data;
+  const transaction  = data;
 
   return (
     <div className='text-primary-text bg-primary-bg lg:w-[400px] mx-auto my-5  flex flex-col items-center justify-center p-4 pb-10 '>
