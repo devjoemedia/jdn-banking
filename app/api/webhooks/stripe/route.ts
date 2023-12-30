@@ -10,7 +10,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
   const body = await request.text();
 
   const sig = request.headers.get("stripe-signature") as string;
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
   let event;
   try {
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
     // CHECK ACCOUNT BALANCE
     const userAcc = await User.findOne({ email: metadata?.senderEmail });
-    if (userAcc.account.demo.balance < metadata.amount) {
+    if (userAcc.account.demo.balance < metadata?.amount!) {
       return NextResponse.json({
         error: true,
         status: 404,
@@ -39,16 +39,16 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
     // CREATE TRANSACTION
     const transaction = await Transaction.create({
-      amount: Number(metadata.amount),
-      comment: metadata.comment,
-      transactionRef: metadata.transactionRef,
+      amount: Number(metadata?.amount as string),
+      comment: metadata?.comment as string,
+      transactionRef: metadata?.transactionRef as string,
       receiver: {
-        name: metadata.receiverName,
-        email: metadata.receiverEmail,
+        name: metadata?.receiverName as string,
+        email: metadata?.receiverEmail as string,
       },
       sender: {
-        name: metadata.senderName,
-        email: metadata.senderEmail,
+        name: metadata?.senderName as string,
+        email: metadata?.senderEmail as string,
       },
       receivingBank: "",
       paymentMethod: "",
