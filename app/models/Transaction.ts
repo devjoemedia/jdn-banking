@@ -14,7 +14,7 @@ interface ITransaction {
   paymentMethod?: string;
   paymentDate: number;
   status: string;
-  createdAt: number;
+  createdAt?: number;
 }
 
 const transactionSchema = new Schema<ITransaction>({

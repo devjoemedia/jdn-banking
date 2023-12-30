@@ -41,49 +41,47 @@ export const recordTransaction = async (transaction: ITransaction) => {
 };
 
 export const createTransaction = async (transaction: ITransaction) => {
-  await connectDB();
+  // await connectDB();
 
   // CHECK ACCOUNT BALANCE
-  const userAcc = await User.findOne({ email: transaction.sender.email });
-  if (userAcc.account.demo.balance < transaction?.amount!) {
-    return {
-      error: true,
-      status: 404,
-      message: "Insufficient funds",
-    };
-  }
+  // const userAcc = await User.findOne({ email: transaction.sender.email });
+  // if (userAcc.account.demo.balance < transaction?.amount!) {
+  //   return {
+  //     error: true,
+  //     status: 404,
+  //     message: "Insufficient funds",
+  //   };
+  // }
 
   // CREATE TRANSACTION
-  const res = await axios.post("/transactions", transaction);
 
   // UPDATE SENDER ACCOUNT BALANCE
-  const senderAcc = await User.findOne({
-    email: transaction.sender.email,
-  });
-  if (senderAcc)
-    await User.updateOne(
-      { email: transaction.sender.email },
-      {
-        $set: {
-          "account.demo.balance":
-            senderAcc.account.demo.balance - transaction.amount,
-        },
-      }
-    );
+  // const senderAcc = await User.findOne({
+  //   email: transaction.sender.email,
+  // });
+  // await User.updateOne(
+  //   { email: transaction.sender.email },
+  //   {
+  //     $set: {
+  //       "account.demo.balance":
+  //         senderAcc.account.demo.balance - transaction.amount,
+  //     },
+  //   }
+  // );
 
-  // UPDATE RECEIVER ACCOUNT BALANCE
-  const receiverAcc = await User.findOne({
-    email: transaction.receiver.email,
-  });
-  if (receiverAcc) {
-    await User.updateOne(
-      { email: transaction.receiver.email },
-      {
-        $set: {
-          "account.demo.balance":
-            receiverAcc.account.demo.balance + transaction.amount,
-        },
-      }
-    );
-  }
+  // // UPDATE RECEIVER ACCOUNT BALANCE
+  // const receiverAcc = await User.findOne({
+  //   email: transaction.receiver.email,
+  // });
+  // if (receiverAcc) {
+  //   await User.updateOne(
+  //     { email: transaction.receiver.email },
+  //     {
+  //       $set: {
+  //         "account.demo.balance":
+  //           receiverAcc.account.demo.balance + transaction.amount,
+  //       },
+  //     }
+  //   );
+  // }
 };

@@ -6,6 +6,7 @@ import Transaction from "app/models/Transaction";
 import { getServerSession } from "next-auth";
 import stripe from "stripe";
 import { createTransaction } from "app/lib/actions/transaction.action";
+import axios from "axios";
 
 export async function POST(request: NextRequest, response: NextResponse) {
   const body = await request.text();
@@ -26,7 +27,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
   // Handle the event
   if (event.type == "checkout.session.completed") {
     const { id, amount_total, metadata } = event.data.object;
-    const transaction = await Transaction.create({
+    const transaction = {
       amount: Number(metadata?.amount as string),
       comment: metadata?.comment as string,
       transactionRef: metadata?.transactionRef as string,
@@ -38,18 +39,19 @@ export async function POST(request: NextRequest, response: NextResponse) {
         name: metadata?.senderName as string,
         email: metadata?.senderEmail as string,
       },
-      receivingBank: "",
-      paymentMethod: "",
+      receivingBank: "JDN Bank",
+      paymentMethod: "MOCK::PAYMENT",
       paymentDate: Date.now(),
       status: "Completed",
-    });
+    };
 
-    await createTransaction(transaction);
+  const {data} = await axios.post("/api/transactions", transaction);
+
     return NextResponse.json({
       error: false,
       status: 201,
       message: "Success",
-      transaction,
+      transaction: data?.transaction,
     });
   }
 }

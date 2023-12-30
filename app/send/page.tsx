@@ -34,7 +34,7 @@ export interface ITransaction {
   status: string;
   receivingBank?: string;
   paymentMethod?: string;
-  createdAt: number;
+  createdAt?: number;
 }
 
 interface IContact {
@@ -93,7 +93,7 @@ export default function Send() {
         return;
       }
 
-      const transactionRef = createTransactionReference()
+      const transactionRef = createTransactionReference();
       const payload: ITransaction = {
         amount: amount as number,
         comment: comment as string,
